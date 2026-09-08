@@ -113,7 +113,11 @@ export function leerHistorico(
 
     const nombreLinea = (fila['linea'] ?? '').trim()
     if (!nombreLinea) {
-      rechazadas.push({ numero, motivo: 'No dice a qué línea pertenece.', contenido })
+      rechazadas.push({
+        numero,
+        motivo: 'La fila no indica a qué línea pertenece.',
+        contenido,
+      })
       return
     }
 
@@ -121,7 +125,7 @@ export function leerHistorico(
     if (!linea) {
       rechazadas.push({
         numero,
-        motivo: `No existe una línea llamada "${nombreLinea}". Creala en configuración o corregí el nombre.`,
+        motivo: `No existe una línea llamada "${nombreLinea}". Puedes crearla en configuración o corregir el nombre.`,
         contenido,
       })
       return
@@ -155,7 +159,8 @@ export function leerHistorico(
     if (mensajes === null && reproducciones === null && inversion === null && dias === null) {
       rechazadas.push({
         numero,
-        motivo: 'No trae ninguna cifra. Una fila vacía haría ver la semana como registrada.',
+        motivo:
+          'La fila no trae ninguna cifra. Una fila vacía haría ver la semana como registrada.',
         contenido,
       })
       return

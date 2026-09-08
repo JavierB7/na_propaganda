@@ -12,7 +12,7 @@
 function requerido(nombre: string, valor: string | undefined): string {
   if (!valor) {
     throw new Error(
-      `Falta la variable de entorno ${nombre}. Copiá .env.example a .env.local y llenala.`,
+      `Falta la variable de entorno ${nombre}. Copia .env.example a .env.local y complétala.`,
     )
   }
   return valor

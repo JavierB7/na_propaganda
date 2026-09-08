@@ -24,7 +24,7 @@ export default async function PaginaPiezas() {
 
       {activas.length === 0 ? (
         <p className={estilos.vacio}>
-          No hay líneas activas. <Link href="/config">Creá o activá una línea</Link>{' '}
+          No hay líneas activas. <Link href="/config">Crea o activa una línea</Link>{' '}
           antes de agregar piezas.
         </p>
       ) : (
@@ -42,8 +42,9 @@ export default async function PaginaPiezas() {
 
             {todasLasPiezas.length === 0 ? (
               <p className={estilos.vacio}>
-                Todavía no hay piezas. Creá la primera arriba, o registrá solo el
-                total de cada línea en la pantalla de la semana.
+                Todavía no hay piezas. Puedes crear la primera arriba, o
+                registrar solo el total de cada línea en la pantalla de la
+                semana.
               </p>
             ) : (
               todasLasLineas.map((linea) => {

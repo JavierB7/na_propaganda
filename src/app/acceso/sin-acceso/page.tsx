@@ -21,13 +21,13 @@ export default async function SinAcceso() {
         </p>
 
         <p className={estilos.aviso}>
-          Si te corresponde entrar, pedí que agreguen tu correo a la lista. Si
-          usás varios correos, probá con otro.
+          Si te corresponde el acceso, solicita que agreguen tu correo a la
+          lista. Si usas varios correos, puedes intentar con otro.
         </p>
 
         <form action={salir} className={estilos.formulario}>
           <button className={estilos.boton} type="submit">
-            Salir y probar con otro correo
+            Salir e intentar con otro correo
           </button>
         </form>
       </div>

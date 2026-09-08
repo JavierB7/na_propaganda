@@ -8,9 +8,9 @@ import estilos from './acceso.module.css'
 export const metadata: Metadata = { title: 'Entrar · Bitácora de Difusión' }
 
 const AVISOS: Record<string, string> = {
-  'enlace-invalido': 'Ese enlace no traía la información necesaria. Pedí uno nuevo.',
+  'enlace-invalido': 'Ese enlace no traía la información necesaria. Puedes solicitar uno nuevo.',
   'enlace-vencido':
-    'El enlace ya venció o se usó. Los enlaces sirven una vez; pedí uno nuevo.',
+    'El enlace ya venció o se usó. Cada enlace sirve una sola vez; puedes solicitar uno nuevo.',
 }
 
 export default async function Acceso({
@@ -46,7 +46,8 @@ export default async function Acceso({
         <FormularioDeAcceso destino={destino ?? '/semana'} />
 
         <p className={estilos.pie}>
-          No hay contraseña. Te llega un enlace al correo y con eso entrás.
+          No hay contraseña. Te llega un enlace al correo y con eso puedes
+          iniciar sesión.
         </p>
       </div>
     </main>

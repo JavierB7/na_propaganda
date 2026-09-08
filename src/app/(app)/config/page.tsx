@@ -17,8 +17,8 @@ export default async function PaginaLineas() {
       <h1 className={estilos.titulo}>Líneas de difusión</h1>
       <p className={estilos.intro}>
         Las cinco que están sembradas salen de la conversación con Carlos y
-        pueden estar incompletas. Cada línea tiene su propia escala de éxito:
-        nunca se comparan entre sí.
+        pueden estar incompletas. Cada línea tiene su propia escala de éxito, así
+        que nunca se comparan entre sí.
       </p>
 
       <section className={estilos.seccion}>
@@ -32,7 +32,7 @@ export default async function PaginaLineas() {
 
         {todas.length === 0 ? (
           <p className={estilos.vacio}>
-            Todavía no hay líneas. Creá la primera abajo para poder registrar.
+            Todavía no hay líneas. Crea la primera abajo para poder registrar.
           </p>
         ) : (
           todas.map((linea) => <FichaDeLinea key={linea.id} linea={linea} />)

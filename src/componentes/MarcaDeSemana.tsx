@@ -20,7 +20,8 @@ export function MarcaDeSemana({
   if (esperadas === 0) {
     return (
       <p className={estilos.marca}>
-        Nada esperado esta semana. Activá una pieza o una línea en configuración.
+        Nada esperado esta semana. Puedes activar una pieza o una línea en
+        configuración.
       </p>
     )
   }

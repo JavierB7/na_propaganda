@@ -26,7 +26,7 @@ export async function cargarHistorico(texto: string): Promise<ResultadoCarga> {
   await exigirAutorizacion()
 
   if (!texto.trim()) {
-    return { ok: false, error: 'El archivo llegó vacío. Elegí un CSV con datos.' }
+    return { ok: false, error: 'El archivo llegó vacío. Elige un CSV con datos.' }
   }
 
   const catalogo = await lineas()
@@ -82,7 +82,7 @@ export async function cargarHistorico(texto: string): Promise<ResultadoCarga> {
   if (error) {
     return {
       ok: false,
-      error: `No se cargó nada: ${error.message}. Revisá el archivo y volvé a intentar.`,
+      error: `No se cargó nada: ${error.message}. Revisa el archivo e intenta de nuevo.`,
     }
   }
 

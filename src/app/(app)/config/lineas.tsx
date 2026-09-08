@@ -66,8 +66,8 @@ export function NuevaLinea() {
             placeholder="Qué significa un buen resultado en esta línea"
           />
           <span className={estilos.ayuda}>
-            Se muestra junto a las cifras, para que quien lea sepa que la misma
-            cantidad no significa lo mismo en cada línea.
+            Se muestra junto a las cifras, para que quien las lea sepa que la
+            misma cantidad no significa lo mismo en cada línea.
           </span>
         </div>
 
@@ -115,8 +115,8 @@ export function FichaDeLinea({ linea }: { linea: Linea }) {
             required
           />
           <span className={estilos.ayuda}>
-            El prefijo <strong>{linea.prefijo}</strong> no cambia aunque
-            corrijas el nombre: los códigos ya emitidos son permanentes.
+            El prefijo <strong>{linea.prefijo}</strong> no cambia aunque se
+            corrija el nombre: los códigos ya emitidos son permanentes.
           </span>
         </div>
 

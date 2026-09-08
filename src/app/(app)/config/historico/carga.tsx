@@ -45,7 +45,9 @@ export function CargaHistorica({
       setNombreArchivo(archivo.name)
       setLectura(leerHistorico(contenido, lineas))
     } catch {
-      setErrorLocal('No se pudo leer el archivo. Probá guardarlo de nuevo como CSV.')
+      setErrorLocal(
+        'No se pudo leer el archivo. Puedes guardarlo de nuevo como CSV e intentar otra vez.',
+      )
     }
   }
 

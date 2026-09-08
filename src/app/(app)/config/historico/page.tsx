@@ -37,18 +37,18 @@ export default async function PaginaHistorico() {
         <ul className={estilos.lista}>
           <li>
             <strong>linea</strong> y <strong>semana</strong> son obligatorias. La
-            línea se busca por nombre, sin importar acentos ni mayúsculas, y
-            tiene que existir en configuración.
+            línea se busca por nombre, sin importar acentos ni mayúsculas, y tiene
+            que existir en configuración.
           </li>
           <li>
             <strong>semana</strong> va como AAAA-MM-DD. Si la fecha no cae en
-            lunes, se mueve al lunes de esa semana y te lo avisa antes de
+            lunes, se mueve al lunes de esa semana y el sistema lo avisa antes de
             cargar.
           </li>
           <li>
-            <strong>mensajes</strong> es el total que ya venías reportando. Se
-            guarda como cifra histórica sin desglose, porque el cuaderno
-            conserva la suma y no sus partes.
+            <strong>mensajes</strong> es el total que ya se venía reportando. Se
+            guarda como cifra histórica sin desglose, porque el cuaderno conserva
+            la suma y no sus partes.
           </li>
           <li>
             Las demás columnas son opcionales y se pueden dejar vacías. Vacío

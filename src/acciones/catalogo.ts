@@ -33,7 +33,7 @@ function mensaje(texto: string): string {
     return 'Ya existe una línea con ese nombre, activa o desactivada.'
   }
   if (texto.includes('linea_prefijo_unico')) {
-    return 'El prefijo derivado de ese nombre ya lo usa otra línea. Cambiá el nombre o escribí un prefijo distinto.'
+    return 'El prefijo derivado de ese nombre ya lo usa otra línea. Puedes cambiar el nombre o escribir un prefijo distinto.'
   }
   if (texto.includes('linea_prefijo_formato')) {
     return 'El prefijo debe tener entre 2 y 5 letras mayúsculas, sin espacios ni acentos.'
@@ -45,7 +45,7 @@ function mensaje(texto: string): string {
     return 'La pieza necesita una descripción para poder reconocerla.'
   }
   if (texto.includes('violates foreign key') && texto.includes('pieza')) {
-    return 'No se puede eliminar: hay registros que dependen de esto. Desactivalo en lugar de borrarlo.'
+    return 'No se puede eliminar porque hay registros que dependen de esto. Puedes desactivarlo en lugar de borrarlo.'
   }
   return texto
 }
@@ -62,7 +62,7 @@ export async function crearLinea(
   const unidadExito = String(formulario.get('unidad_exito') ?? '').trim()
   const prefijoDado = String(formulario.get('prefijo') ?? '').trim().toUpperCase()
 
-  if (!nombre) return { ok: false, error: 'Escribí el nombre de la línea.' }
+  if (!nombre) return { ok: false, error: 'Escribe el nombre de la línea.' }
 
   const supabase = await crearClienteServidor()
 
@@ -100,7 +100,7 @@ export async function actualizarLinea(
   const orden = Number(formulario.get('orden') ?? 0)
   const activo = formulario.get('activo') === 'on'
 
-  if (!id) return { ok: false, error: 'Falta la línea a modificar.' }
+  if (!id) return { ok: false, error: 'No se identificó la línea a modificar.' }
   if (!nombre) return { ok: false, error: 'La línea necesita un nombre.' }
 
   const supabase = await crearClienteServidor()
@@ -135,12 +135,12 @@ export async function crearPieza(
   const fechaSubida = String(formulario.get('fecha_subida') ?? '').trim()
   const metaAdId = String(formulario.get('meta_ad_id') ?? '').trim()
 
-  if (!lineaId) return { ok: false, error: 'Elegí a qué línea pertenece la pieza.' }
+  if (!lineaId) return { ok: false, error: 'Elige a qué línea pertenece la pieza.' }
   if (!descripcion) {
-    return { ok: false, error: 'Escribí una descripción para reconocer la pieza.' }
+    return { ok: false, error: 'Escribe una descripción para reconocer la pieza.' }
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaSubida)) {
-    return { ok: false, error: 'Indicá la fecha en que se subió la pieza.' }
+    return { ok: false, error: 'Indica la fecha en que se subió la pieza.' }
   }
 
   const supabase = await crearClienteServidor()
@@ -172,7 +172,7 @@ export async function actualizarPieza(
   const metaAdId = String(formulario.get('meta_ad_id') ?? '').trim()
   const activo = formulario.get('activo') === 'on'
 
-  if (!id) return { ok: false, error: 'Falta la pieza a modificar.' }
+  if (!id) return { ok: false, error: 'No se identificó la pieza a modificar.' }
   if (!descripcion) {
     return { ok: false, error: 'La pieza necesita una descripción.' }
   }

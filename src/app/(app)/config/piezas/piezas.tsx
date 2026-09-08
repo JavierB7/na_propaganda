@@ -65,7 +65,7 @@ export function NuevaPieza({ lineas, hoy }: { lineas: Linea[]; hoy: string }) {
             placeholder="Isrey con Alejandro"
           />
           <span className={estilos.ayuda}>
-            Como la reconocés al hablar de ella. El código lo pone el sistema.
+            Como la reconoces al hablar de ella. El código lo pone el sistema.
           </span>
         </div>
 

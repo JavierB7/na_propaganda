@@ -132,7 +132,7 @@ begin
         and id <> new.id
     ) then
       raise exception
-        'La línea ya tiene un total agregado en la semana %. Eliminá el '
+        'La línea ya tiene un total agregado en la semana %. Elimina el '
         'agregado antes de registrar por pieza.', new.semana_inicio
         using errcode = 'integrity_constraint_violation';
     end if;

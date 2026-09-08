@@ -274,7 +274,7 @@ export function Captura({
 
       {semana.length === 0 && (
         <p className={estilos.vacio}>
-          No hay líneas activas. Creá o activá una línea en configuración para
+          No hay líneas activas. Crea o activa una línea en configuración para
           empezar a registrar.
         </p>
       )}
@@ -337,8 +337,8 @@ export function Captura({
               <>
                 {piezasActivas.length === 0 && grupo.piezas.length === 0 && (
                   <p className={estilos.vacio}>
-                    Sin piezas activas en {grupo.linea.nombre}. Registrá el total
-                    de la línea, o activá una pieza en configuración.
+                    Sin piezas activas en {grupo.linea.nombre}. Puedes registrar
+                    el total de la línea, o activar una pieza en configuración.
                   </p>
                 )}
                 <div className={estilos.marco}>
@@ -361,8 +361,8 @@ export function Captura({
               </>
             ) : grupo.piezas.length === 0 ? (
               <p className={estilos.vacio}>
-                Sin piezas en {grupo.linea.nombre}. Creá una pieza en
-                configuración, o registrá solo el total de la línea.
+                Sin piezas en {grupo.linea.nombre}. Puedes crear una pieza en
+                configuración, o registrar solo el total de la línea.
               </p>
             ) : (
               <div className={estilos.marco}>
@@ -387,12 +387,12 @@ export function Captura({
 
       <div className={estilos.barraGuardado}>
         <p className={estilos.pista}>
-          Para borrar un registro, vaciá todos sus campos y guardá.
+          Para borrar un registro, vacía todos sus campos y guarda la semana.
         </p>
 
         {borradorRestaurado && (
           <p className={estilos.borrador}>
-            Se recuperó lo que habías tecleado y todavía no está guardado.
+            Se recuperó lo que habías escrito y todavía no está guardado.
           </p>
         )}
         {error && <p className={estilos.error}>{error}</p>}

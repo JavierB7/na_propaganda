@@ -21,7 +21,7 @@ export async function enviarEnlace(
   const destino = String(formulario.get('destino') ?? '/semana')
 
   if (!correo || !correo.includes('@')) {
-    return { error: 'Escribí un correo válido para recibir el enlace.' }
+    return { error: 'Escribe un correo válido para recibir el enlace.' }
   }
 
   const supabase = await crearClienteServidor()
@@ -43,7 +43,7 @@ export async function enviarEnlace(
   if (error) {
     return {
       error:
-        'No se pudo enviar el enlace. Revisá el correo e intentá de nuevo en un momento.',
+        'No se pudo enviar el enlace. Revisa el correo e intenta de nuevo en un momento.',
     }
   }
 

@@ -13,8 +13,8 @@ export function FormularioDeAcceso({ destino }: { destino: string }) {
   if (resultado && 'enviado' in resultado) {
     return (
       <p className={estilos.confirmacion}>
-        Enlace enviado a <strong>{resultado.enviado}</strong>. Abrilo desde este
-        mismo teléfono o computadora para entrar.
+        Enlace enviado a <strong>{resultado.enviado}</strong>. Ábrelo desde
+        este mismo teléfono o computadora para iniciar sesión.
       </p>
     )
   }

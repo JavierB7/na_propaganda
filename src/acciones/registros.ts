@@ -75,7 +75,8 @@ export async function guardarSemana(
   if (!esLunes(semana)) {
     return {
       ok: false,
-      error: 'La semana debe empezar en lunes. Volvé a elegirla con las flechas.',
+      error:
+        'La semana debe empezar en lunes. Puedes elegirla de nuevo con las flechas.',
     }
   }
 
@@ -153,16 +154,16 @@ function mensajeDeError(mensaje: string): string {
     return 'Esta línea ya tiene registros por pieza en la semana. Un total de línea sumado a sus piezas contaría doble.'
   }
   if (mensaje.includes('total agregado')) {
-    return 'Esta línea ya tiene un total de línea en la semana. Vaciá ese total antes de registrar por pieza.'
+    return 'Esta línea ya tiene un total de línea en la semana. Vacía ese total antes de registrar por pieza.'
   }
   if (mensaje.includes('registro_pieza_semana_unico')) {
-    return 'Alguien guardó esta misma pieza y semana mientras registrabas. Recargá la semana y revisá las cifras antes de guardar.'
+    return 'Alguien guardó esta misma pieza y semana mientras registrabas. Recarga la semana y revisa las cifras antes de guardar.'
   }
   if (mensaje.includes('registro_linea_semana_agregado_unico')) {
-    return 'Alguien guardó el total de esta línea mientras registrabas. Recargá la semana y revisá las cifras.'
+    return 'Alguien guardó el total de esta línea mientras registrabas. Recarga la semana y revisa las cifras.'
   }
   if (mensaje.includes('registro_semana_es_lunes')) {
-    return 'La semana debe empezar en lunes. Volvé a elegirla con las flechas.'
+    return 'La semana debe empezar en lunes. Puedes elegirla de nuevo con las flechas.'
   }
   return `No se pudo guardar: ${mensaje}`
 }
