@@ -1,0 +1,321 @@
+/*
+ * Captura semanal. Móvil primero: en pantallas angostas cada pieza es un
+ * bloque con etiqueta a la izquierda y cifra a la derecha, donde llega el
+ * pulgar. A partir de 60rem la misma estructura se convierte en tabla, que
+ * es lo que el ancho gana.
+ */
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--espacio-3) var(--espacio-5);
+  margin-bottom: var(--espacio-6);
+}
+
+.linea {
+  margin-top: var(--espacio-7);
+}
+
+.linea:first-of-type {
+  margin-top: 0;
+}
+
+.nombreLinea {
+  font-size: var(--t-titulo);
+}
+
+.unidadExito {
+  color: var(--tinta-suave);
+  margin-top: var(--espacio-1);
+  max-width: 56ch;
+}
+
+/* Regla doble: abre la sección de una línea. */
+.reglaLinea {
+  height: 3px;
+  border-top: 1px solid var(--pino);
+  border-bottom: 1px solid var(--pino);
+  margin: var(--espacio-3) 0 var(--espacio-4);
+}
+
+.cambioModo {
+  font: inherit;
+  color: var(--pino);
+  background: none;
+  border: none;
+  padding: var(--espacio-2) 0;
+  min-height: var(--toque);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-align: left;
+}
+
+.vacio {
+  color: var(--tinta-suave);
+  padding: var(--espacio-3) 0 var(--espacio-4);
+}
+
+/* ── Rejilla ─────────────────────────────────────────────────────────────── */
+
+.marco {
+  overflow-x: auto;
+  /* Solo la tabla desplaza en horizontal; el cuerpo de la página nunca. */
+  overscroll-behavior-x: contain;
+}
+
+.encabezado {
+  display: none;
+}
+
+.fila {
+  display: grid;
+  gap: 0;
+  padding: var(--espacio-4) 0 var(--espacio-5);
+  border-bottom: 1px solid var(--regla);
+}
+
+.identidad {
+  margin-bottom: var(--espacio-3);
+}
+
+.codigo {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.descripcion {
+  color: var(--tinta-suave);
+}
+
+.inactiva {
+  color: var(--atencion-texto);
+  font-size: var(--t-base);
+}
+
+.campo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  min-height: var(--toque);
+  /* La regla abarca etiqueta y cifra: una línea de libro mayor, no un campo
+     de formulario con su propio subrayado encima del borde de la fila. */
+  border-bottom: 1px solid var(--regla);
+}
+
+.etiqueta {
+  color: var(--tinta);
+}
+
+.entrada {
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--t-cifra);
+  color: var(--pino);
+  text-align: right;
+  width: 6.5rem;
+  min-height: var(--toque);
+  padding: 0 var(--espacio-2);
+  background: transparent;
+  border: none;
+  border-radius: 2px;
+  /* Sin flechitas: se teclea, no se incrementa. */
+  appearance: textfield;
+}
+
+.entrada::-webkit-outer-spin-button,
+.entrada::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.entrada:focus {
+  background: #fff;
+}
+
+.entrada::placeholder {
+  color: var(--regla-fuerte);
+}
+
+.entradaAncha {
+  /* Compone la base: sin esto hereda el estilo por defecto del navegador y
+     aparece una caja donde el resto de los campos son solo una línea. */
+  composes: entrada;
+  width: 8rem;
+}
+
+/* Total derivado de la pieza. Único lugar con el amarillo. */
+.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  min-height: var(--toque);
+  padding-top: var(--espacio-3);
+}
+
+.totalEtiqueta {
+  color: var(--tinta-suave);
+}
+
+.totalCifra {
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--t-cifra);
+  color: var(--oliva-texto);
+  text-align: right;
+  padding: 0 var(--espacio-2) 2px;
+  border-bottom: 3px solid var(--cromo);
+}
+
+.totalSinDato {
+  font-family: var(--serif);
+  font-size: var(--t-cifra);
+  color: var(--regla-fuerte);
+  padding: 0 var(--espacio-2);
+}
+
+/* ── Escritorio: la misma estructura como tabla ──────────────────────────── */
+
+@media (min-width: 60rem) {
+  .encabezado,
+  .fila {
+    display: grid;
+    grid-template-columns:
+      minmax(16rem, 1fr)
+      repeat(3, 7rem)
+      8rem
+      6rem
+      7rem;
+    align-items: center;
+    column-gap: var(--espacio-3);
+    min-width: 64rem;
+  }
+
+  .encabezado {
+    padding-bottom: var(--espacio-2);
+    border-bottom: 1px solid var(--pino);
+    color: var(--tinta-suave);
+  }
+
+  .encabezadoCifra {
+    text-align: right;
+    padding-right: var(--espacio-2);
+  }
+
+  .fila {
+    padding: var(--espacio-2) 0;
+  }
+
+  .identidad {
+    margin-bottom: 0;
+    padding-right: var(--espacio-4);
+  }
+
+  .campo,
+  .total {
+    display: block;
+    min-height: 0;
+    border-bottom: none;
+    padding-top: 0;
+  }
+
+  .entrada,
+  .entradaAncha {
+    border-bottom: 1px solid var(--regla-fuerte);
+  }
+
+  .entrada:focus {
+    border-bottom-color: var(--pino);
+  }
+
+  /* La etiqueta sigue en el DOM para lectores de pantalla. */
+  .etiqueta,
+  .totalEtiqueta {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .entrada,
+  .entradaAncha {
+    width: 100%;
+    font-size: var(--t-media);
+  }
+
+  .totalCifra,
+  .totalSinDato {
+    display: block;
+    font-size: var(--t-media);
+    text-align: right;
+  }
+}
+
+/* ── Barra de guardado ───────────────────────────────────────────────────── */
+
+.barraGuardado {
+  position: sticky;
+  bottom: 0;
+  margin-top: var(--espacio-6);
+  padding: var(--espacio-3) 0 calc(var(--espacio-3) + env(safe-area-inset-bottom));
+  background: linear-gradient(
+    to top,
+    var(--papel) 0%,
+    var(--papel) 72%,
+    rgb(244 247 245 / 0) 100%
+  );
+  display: grid;
+  gap: var(--espacio-2);
+}
+
+.guardar {
+  min-height: 3.25rem;
+  font: inherit;
+  font-size: var(--t-media);
+  font-weight: 600;
+  color: #fff;
+  background: var(--pino);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.guardar:hover:not(:disabled) {
+  background: var(--profundo);
+}
+
+.guardar:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.error {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--atencion);
+  background: var(--papel-hundido);
+}
+
+.confirmacion {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--oliva);
+  background: var(--papel-hundido);
+}
+
+.borrador {
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+}
+
+@media (min-width: 60rem) {
+  .guardar {
+    width: auto;
+    justify-self: start;
+    padding: 0 var(--espacio-6);
+  }
+}

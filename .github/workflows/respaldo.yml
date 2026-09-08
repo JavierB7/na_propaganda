@@ -1,0 +1,67 @@
+# Respaldo semanal de la Bitácora de Difusión.
+#
+# El plan gratuito de Supabase no ofrece recuperación a un punto en el tiempo,
+# así que este archivo es el único punto de retorno si se borra una fila por
+# error. Los datos son decenas de filas por mes: respaldar todo es trivial.
+#
+# El respaldo se comita al repositorio a propósito, y no solo se guarda como
+# artefacto: los artefactos expiran, y además el commit cuenta como actividad
+# del repositorio, lo que evita que GitHub deshabilite este mismo workflow por
+# 60 días de inactividad. El ping que mantiene despierta la base de datos vive
+# en Vercel Cron justamente porque no depende de la actividad del repositorio.
+
+name: Respaldo semanal
+
+on:
+  schedule:
+    # Lunes 09:15 UTC — después de la reunión semanal, antes de la del profe.
+    - cron: '15 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  respaldar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Descargar el respaldo
+        env:
+          URL_APP: ${{ secrets.URL_APP }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          mkdir -p respaldos
+          FECHA="$(date -u +%Y-%m-%d)"
+          ESTADO=$(curl -sS -o "respaldos/bitacora-$FECHA.csv" -w '%{http_code}' \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$URL_APP/api/cron/respaldo")
+
+          if [ "$ESTADO" != "200" ]; then
+            echo "::error::El respaldo falló con estado HTTP $ESTADO"
+            cat "respaldos/bitacora-$FECHA.csv" || true
+            rm -f "respaldos/bitacora-$FECHA.csv"
+            exit 1
+          fi
+
+          if [ ! -s "respaldos/bitacora-$FECHA.csv" ]; then
+            echo "::error::El respaldo llegó vacío"
+            exit 1
+          fi
+
+          echo "Respaldo de $FECHA: $(wc -l < "respaldos/bitacora-$FECHA.csv") líneas"
+
+      - name: Guardar en el repositorio
+        run: |
+          set -euo pipefail
+          if git diff --quiet --exit-code -- respaldos/; then
+            echo "Sin cambios en los respaldos."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add respaldos/
+          git commit -m "chore: respaldo de la bitácora $(date -u +%Y-%m-%d)"
+          git push

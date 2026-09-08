@@ -1,0 +1,105 @@
+/*
+ * Pantalla de acceso. Es el único lugar donde va la insignia completa: el
+ * disco con el RIF y la ciudad se lee a este tamaño, y en la barra de la
+ * aplicación no.
+ */
+
+.pantalla {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--espacio-5) var(--espacio-4);
+  padding-bottom: calc(var(--espacio-5) + env(safe-area-inset-bottom));
+}
+
+.tarjeta {
+  width: 100%;
+  max-width: 27rem;
+  text-align: center;
+}
+
+.insignia {
+  width: 8.5rem;
+  height: 8.5rem;
+  margin: 0 auto var(--espacio-5);
+  display: block;
+}
+
+.titulo {
+  font-size: var(--t-cifra);
+  margin-bottom: var(--espacio-2);
+}
+
+.sub {
+  color: var(--tinta-suave);
+  margin: 0 auto var(--espacio-6);
+  max-width: 30ch;
+}
+
+.formulario {
+  display: grid;
+  gap: var(--espacio-3);
+  text-align: left;
+}
+
+.etiqueta {
+  font-weight: 500;
+  font-size: var(--t-base);
+}
+
+.campo {
+  width: 100%;
+  min-height: var(--toque);
+  padding: 0 var(--espacio-3);
+  font: inherit;
+  color: var(--tinta);
+  background: #fff;
+  border: 1px solid var(--regla-fuerte);
+  border-radius: 4px;
+}
+
+.campo::placeholder {
+  color: var(--tinta-suave);
+  opacity: 0.7;
+}
+
+.boton {
+  min-height: var(--toque);
+  padding: 0 var(--espacio-5);
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--pino);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.boton:hover:not(:disabled) {
+  background: var(--profundo);
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.aviso {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--atencion);
+  background: var(--papel-hundido);
+  text-align: left;
+}
+
+.confirmacion {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--oliva);
+  background: var(--papel-hundido);
+  text-align: left;
+}
+
+.pie {
+  margin-top: var(--espacio-6);
+  font-size: var(--t-base);
+  color: var(--tinta-suave);
+}

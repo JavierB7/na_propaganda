@@ -1,0 +1,132 @@
+/* Navegador de semana y marca de progreso. */
+
+.navegador {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+/* Controles grandes en lugar de un selector de fecha: se toca con el pulgar. */
+.flecha {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--toque);
+  height: var(--toque);
+  color: var(--pino);
+  background: none;
+  border: 1px solid var(--regla-fuerte);
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: var(--t-media);
+  flex: none;
+}
+
+.flecha:hover {
+  border-color: var(--pino);
+  background: #fff;
+}
+
+.rango {
+  font-family: var(--serif);
+  font-size: var(--t-cifra);
+  font-weight: 600;
+  line-height: 1.1;
+  padding: 0 var(--espacio-2);
+  min-width: 9.5rem;
+  text-align: center;
+}
+
+.rangoLargo {
+  display: none;
+}
+
+@media (min-width: 60rem) {
+  .rango {
+    display: none;
+  }
+
+  .rangoLargo {
+    display: block;
+    font-family: var(--serif);
+    font-size: var(--t-cifra-ancha);
+    font-weight: 600;
+    line-height: 1.1;
+    padding: 0 var(--espacio-3);
+  }
+}
+
+.hoy {
+  font: inherit;
+  color: var(--pino);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  align-self: center;
+  padding: var(--espacio-2);
+  min-height: var(--toque);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ── Marca de la semana ──────────────────────────────────────────────────── */
+/*
+ * La imagen viene de la reunión: el mandala tibetano que se teje, se desteje
+ * y se vuelve a tejer. Lo que importa es el ejercicio, no el resultado.
+ */
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  color: var(--tinta-suave);
+}
+
+.rombos {
+  display: flex;
+  gap: 0.3rem;
+  /* Sin envolver: la fila de rombos se lee de un vistazo. */
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.rombo {
+  width: 0.6rem;
+  height: 0.6rem;
+  flex: none;
+  transform: rotate(45deg);
+  border: 1px solid var(--regla-fuerte);
+}
+
+.romboLleno {
+  background: var(--pino);
+  border-color: var(--pino);
+}
+
+.romboCompleta {
+  background: var(--cromo);
+  border-color: var(--oliva);
+}
+
+/* La única animación del sistema: la semana cerrándose al guardar. */
+@keyframes tejer {
+  from {
+    transform: rotate(45deg) scale(0.4);
+    opacity: 0.3;
+  }
+  to {
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.tejiendo .romboLleno,
+.tejiendo .romboCompleta {
+  animation: tejer 400ms ease-out backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tejiendo .romboLleno,
+  .tejiendo .romboCompleta {
+    animation: none;
+  }
+}

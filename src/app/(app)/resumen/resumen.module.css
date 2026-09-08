@@ -1,0 +1,203 @@
+/*
+ * Resumen semanal. Cada línea es una sección propia con su total y su unidad
+ * de éxito.
+ *
+ * Deliberadamente NO hay: columna ordenable entre líneas, control de orden
+ * por total, ni total global. Veinte mensajes son un triunfo en arteterapia y
+ * un fracaso en librería; presentarlas como comparables produce conclusiones
+ * falsas, y es el error que este sistema existe para prevenir.
+ */
+
+.intro {
+  margin: var(--espacio-5) 0 var(--espacio-6);
+  color: var(--tinta-suave);
+}
+
+.linea {
+  margin-top: var(--espacio-6);
+  padding-top: var(--espacio-5);
+  border-top: 1px solid var(--pino);
+}
+
+.linea:first-of-type {
+  margin-top: var(--espacio-5);
+}
+
+.encabezadoLinea {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-3) var(--espacio-5);
+}
+
+.nombre {
+  font-size: var(--t-titulo);
+}
+
+.unidadExito {
+  color: var(--tinta-suave);
+  margin-top: var(--espacio-2);
+  max-width: 60ch;
+}
+
+.totalBloque {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espacio-3);
+  margin-left: auto;
+}
+
+.totalEtiqueta {
+  color: var(--tinta-suave);
+}
+
+.totalCifra {
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--t-cifra);
+  color: var(--pino);
+  padding-bottom: 2px;
+  border-bottom: 3px solid var(--cromo);
+}
+
+@media (min-width: 60rem) {
+  .totalCifra {
+    font-size: var(--t-cifra-ancha);
+  }
+}
+
+.sinRegistrar {
+  color: var(--atencion-texto);
+}
+
+.historico {
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+  margin-top: var(--espacio-1);
+}
+
+/* Semanas previas: solo lectura, para responder "¿y la semana pasada?". */
+.previas {
+  display: flex;
+  gap: var(--espacio-5);
+  margin-top: var(--espacio-4);
+  flex-wrap: wrap;
+}
+
+.previa {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+}
+
+.previaEtiqueta {
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+}
+
+.previaCifra {
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--t-media);
+  color: var(--tinta);
+}
+
+.previaSinDato {
+  font-family: var(--serif);
+  font-size: var(--t-media);
+  color: var(--regla-fuerte);
+}
+
+/* ── Desglose por pieza ──────────────────────────────────────────────────── */
+
+.desglose {
+  margin-top: var(--espacio-4);
+}
+
+.abrirDesglose {
+  cursor: pointer;
+  color: var(--pino);
+  min-height: var(--toque);
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.abrirDesglose::-webkit-details-marker {
+  display: none;
+}
+
+.abrirDesglose::before {
+  content: '▸';
+  margin-right: var(--espacio-2);
+}
+
+.desglose[open] .abrirDesglose::before {
+  content: '▾';
+}
+
+.marco {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  margin-top: var(--espacio-3);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 46rem;
+}
+
+.tabla th,
+.tabla td {
+  padding: var(--espacio-2) var(--espacio-3);
+  border-bottom: 1px solid var(--regla);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.tabla thead th {
+  color: var(--tinta-suave);
+  font-weight: 500;
+  border-bottom-color: var(--regla-fuerte);
+}
+
+.numerica {
+  text-align: right;
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+
+.ausente {
+  text-align: right;
+  font-family: var(--serif);
+  color: var(--regla-fuerte);
+}
+
+.codigo {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.descripcionPieza {
+  color: var(--tinta-suave);
+}
+
+.notaAgregado {
+  color: var(--tinta-suave);
+  margin-top: var(--espacio-3);
+}
+
+.vacioSemana {
+  margin: var(--espacio-6) 0;
+  padding: var(--espacio-5);
+  background: var(--papel-hundido);
+  border-left: 3px solid var(--pino);
+}
+
+.vacioTitulo {
+  font-size: var(--t-media);
+  margin-bottom: var(--espacio-2);
+}

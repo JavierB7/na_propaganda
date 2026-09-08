@@ -1,0 +1,194 @@
+/* Configuración: líneas y piezas. Formularios sobrios, sin tarjetas. */
+
+.titulo {
+  font-size: var(--t-cifra);
+}
+
+.intro {
+  color: var(--tinta-suave);
+  margin: var(--espacio-3) 0 var(--espacio-5);
+}
+
+.pestanias {
+  display: flex;
+  gap: var(--espacio-4);
+  border-bottom: 1px solid var(--regla-fuerte);
+  margin-bottom: var(--espacio-5);
+}
+
+.pestania {
+  padding: var(--espacio-3) 0;
+  margin-bottom: -1px;
+  color: var(--tinta-suave);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  min-height: var(--toque);
+  display: inline-flex;
+  align-items: center;
+}
+
+.pestaniaActiva {
+  color: var(--pino);
+  font-weight: 600;
+  border-bottom-color: var(--pino);
+}
+
+.seccion {
+  margin-bottom: var(--espacio-7);
+}
+
+.subtitulo {
+  font-size: var(--t-titulo);
+  margin-bottom: var(--espacio-4);
+}
+
+.ficha {
+  padding: var(--espacio-4) 0;
+  border-top: 1px solid var(--regla);
+}
+
+.fichaInactiva {
+  opacity: 0.65;
+}
+
+.formulario {
+  display: grid;
+  gap: var(--espacio-3);
+}
+
+@media (min-width: 48rem) {
+  .formulario {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+  }
+
+  .anchoCompleto {
+    grid-column: 1 / -1;
+  }
+}
+
+.grupo {
+  display: grid;
+  gap: var(--espacio-1);
+}
+
+.etiqueta {
+  font-weight: 500;
+}
+
+.ayuda {
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+}
+
+.campo,
+.seleccion {
+  width: 100%;
+  min-height: var(--toque);
+  padding: 0 var(--espacio-3);
+  font: inherit;
+  color: var(--tinta);
+  background: #fff;
+  border: 1px solid var(--regla-fuerte);
+  border-radius: 4px;
+}
+
+.area {
+  width: 100%;
+  min-height: 4.5rem;
+  padding: var(--espacio-3);
+  font: inherit;
+  color: var(--tinta);
+  background: #fff;
+  border: 1px solid var(--regla-fuerte);
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.interruptor {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  min-height: var(--toque);
+}
+
+.interruptor input {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--pino);
+}
+
+.boton {
+  min-height: var(--toque);
+  padding: 0 var(--espacio-5);
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--pino);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  justify-self: start;
+}
+
+.boton:hover:not(:disabled) {
+  background: var(--profundo);
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.botonSecundario {
+  composes: boton;
+  color: var(--pino);
+  background: transparent;
+  border: 1px solid var(--regla-fuerte);
+}
+
+.botonSecundario:hover:not(:disabled) {
+  background: #fff;
+  border-color: var(--pino);
+  color: var(--pino);
+}
+
+.codigo {
+  font-family: var(--serif);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.codigoFijo {
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+}
+
+.error {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--atencion);
+  background: var(--papel-hundido);
+}
+
+.exito {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--oliva);
+  background: var(--papel-hundido);
+}
+
+.vacio {
+  color: var(--tinta-suave);
+  padding: var(--espacio-4) 0;
+}
+
+.grupoLinea {
+  margin-top: var(--espacio-6);
+}
+
+.nombreGrupo {
+  font-size: var(--t-media);
+  font-family: var(--serif);
+  font-weight: 600;
+  padding-bottom: var(--espacio-2);
+  border-bottom: 1px solid var(--pino);
+}

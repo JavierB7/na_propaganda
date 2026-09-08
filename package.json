@@ -1,0 +1,35 @@
+{
+  "name": "na-propaganda",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bitácora de Difusión — registro semanal de publicidad del área de difusión de Nueva Acrópolis San Cristóbal",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "db:test": "bash scripts/db-test.sh",
+    "db:test:down": "docker rm -f na-prop-test-db",
+    "test": "node --import tsx --test src/dominio/*.test.ts",
+    "contraste": "node scripts/contraste.mjs"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.47.10",
+    "next": "^16.3.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "tsx": "^4.23.13",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

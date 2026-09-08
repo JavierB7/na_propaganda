@@ -1,0 +1,145 @@
+/*
+ * Tokens del sistema visual.
+ *
+ * Paleta tomada de los estilos computados de acropolis.org y del muestreo de
+ * píxeles del logo local. El verde del logo (#066356) y el del sitio
+ * (#086357) son el mismo color: eso ancla la paleta.
+ *
+ * --cromo NUNCA se usa como color de texto: sobre fondo claro no alcanza AA.
+ * Solo relleno detrás de texto oscuro, o regla y marca.
+ */
+
+:root {
+  --pino: #086357;
+  --profundo: #00453d;
+  --tinta: #14261c;
+  --cromo: #f9cc06;
+  --oliva: #a5a721;
+  --papel: #f4f7f5;
+
+  /* Estado "sin registrar". */
+  --atencion: #f39300;
+
+  /*
+   * Variantes de texto del oliva y el naranja de la marca.
+   *
+   * Los valores de marca son rellenos y marcas: sobre papel dan 2.4:1 y
+   * 2.2:1, muy por debajo de AA. Estas versiones oscurecidas conservan el
+   * tono y alcanzan 5:1 sobre papel y 4.6:1 sobre papel hundido.
+   * Verificado por `npm run contraste`.
+   */
+  --oliva-texto: #6d6e16;
+  --atencion-texto: #995d00;
+
+  /* Derivados. Mezclas del pino sobre el papel, no grises neutros. */
+  --regla: #d3ded9;
+  --regla-fuerte: #b3c6bf;
+  --tinta-suave: #4a5f56;
+  --papel-hundido: #eaefec;
+
+  /*
+   * --fuente-serif y --fuente-sans las inyecta next/font en <html>. Si la
+   * carga falla, los fallbacks son caras reales y no `serif` a secas, para
+   * que la métrica no salte.
+   */
+  --serif: var(--fuente-serif), 'Iowan Old Style', 'Palatino Linotype',
+    Palatino, 'Book Antiqua', Georgia, serif;
+  --sans: var(--fuente-sans), 'Helvetica Neue', -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  /* Escala 15/18/22/28/40. La cifra vive en 28 en móvil y 40 en escritorio. */
+  --t-base: 0.9375rem;
+  --t-media: 1.125rem;
+  --t-titulo: 1.375rem;
+  --t-cifra: 1.75rem;
+  --t-cifra-ancha: 2.5rem;
+
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-5: 1.5rem;
+  --espacio-6: 2rem;
+  --espacio-7: 3rem;
+
+  /* Objetivo de toque mínimo. */
+  --toque: 48px;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Sin ajuste automático de tamaño al rotar el teléfono. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--sans);
+  font-size: var(--t-base);
+  line-height: 1.5;
+  /* El cuerpo nunca desplaza en horizontal: eso es trabajo de cada tabla. */
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.2;
+  /* Sin mayúsculas espaciadas: los títulos son títulos, no etiquetas. */
+  text-transform: none;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  max-width: 68ch;
+}
+
+a {
+  color: var(--pino);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* Toda cifra: serif, numerales tabulares, alineada a la derecha. */
+.cifra {
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  text-align: right;
+  letter-spacing: -0.01em;
+}
+
+/* Ausencia de dato. Nunca un cero. */
+.sin-dato {
+  color: var(--tinta-suave);
+  font-family: var(--serif);
+  text-align: right;
+}
+
+:where(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--pino);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

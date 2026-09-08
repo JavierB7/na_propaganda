@@ -1,0 +1,153 @@
+/*
+ * Carga histórica. Superficie de escritorio: la captura semanal es móvil,
+ * pero transcribir ocho meses en un teléfono no va a ocurrir.
+ */
+
+.titulo {
+  font-size: var(--t-cifra);
+}
+
+.intro {
+  color: var(--tinta-suave);
+  margin: var(--espacio-3) 0 var(--espacio-5);
+}
+
+.seccion {
+  margin-bottom: var(--espacio-6);
+}
+
+.subtitulo {
+  font-size: var(--t-titulo);
+  margin-bottom: var(--espacio-3);
+}
+
+.formato {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  background: var(--papel-hundido);
+  padding: var(--espacio-4);
+  border-left: 3px solid var(--pino);
+}
+
+.formato pre {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--t-base);
+  white-space: pre;
+}
+
+.lista {
+  margin: var(--espacio-3) 0 0;
+  padding-left: 1.2rem;
+  color: var(--tinta-suave);
+}
+
+.lista li {
+  margin-bottom: var(--espacio-2);
+  max-width: 70ch;
+}
+
+.archivo {
+  min-height: var(--toque);
+  font: inherit;
+  padding: var(--espacio-2) 0;
+}
+
+.boton {
+  min-height: var(--toque);
+  padding: 0 var(--espacio-5);
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--pino);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.boton:hover:not(:disabled) {
+  background: var(--profundo);
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.botonSecundario {
+  min-height: var(--toque);
+  padding: 0 var(--espacio-4);
+  font: inherit;
+  color: var(--pino);
+  background: transparent;
+  border: 1px solid var(--regla-fuerte);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-3);
+  margin-top: var(--espacio-4);
+}
+
+.marco {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  margin-top: var(--espacio-3);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 44rem;
+}
+
+.tabla th,
+.tabla td {
+  padding: var(--espacio-2) var(--espacio-3);
+  border-bottom: 1px solid var(--regla);
+  text-align: left;
+}
+
+.tabla thead th {
+  color: var(--tinta-suave);
+  font-weight: 500;
+  border-bottom-color: var(--regla-fuerte);
+}
+
+.numerica {
+  text-align: right;
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.ausente {
+  text-align: right;
+  font-family: var(--serif);
+  color: var(--regla-fuerte);
+}
+
+.marca {
+  color: var(--atencion-texto);
+  font-size: var(--t-base);
+}
+
+.error {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--atencion);
+  background: var(--papel-hundido);
+  margin-top: var(--espacio-4);
+}
+
+.exito {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--oliva);
+  background: var(--papel-hundido);
+  margin-top: var(--espacio-4);
+}
+
+.resumenCarga {
+  margin-top: var(--espacio-4);
+}
