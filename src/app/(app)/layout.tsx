@@ -35,7 +35,7 @@ export default async function CascaronApp({
 
           <Navegacion />
 
-          <form action={salir}>
+          <form action={salir} className={estilos.formSalir}>
             <button className={estilos.salir} type="submit">
               Salir
             </button>

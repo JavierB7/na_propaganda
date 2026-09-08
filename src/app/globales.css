@@ -77,6 +77,16 @@
 html {
   /* Sin ajuste automático de tamaño al rotar el teléfono. */
   -webkit-text-size-adjust: 100%;
+
+  /*
+   * El guardián va acá y no solo en body: el viewport toma su overflow del
+   * elemento raíz. Con `overflow-x: hidden` únicamente en body, body se
+   * convierte en su propio contenedor de desplazamiento y el viewport sigue
+   * desplazando igual.
+   *
+   * Es una red, no una solución: si algo desborda hay que arreglar el ancho.
+   */
+  overflow-x: hidden;
 }
 
 body {
@@ -88,6 +98,7 @@ body {
   line-height: 1.5;
   /* El cuerpo nunca desplaza en horizontal: eso es trabajo de cada tabla. */
   overflow-x: hidden;
+  min-width: 0;
 }
 
 h1,

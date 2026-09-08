@@ -41,8 +41,46 @@
   white-space: nowrap;
 }
 
-/* En pantallas angostas queda el monograma y la sección actual. */
-@media (max-width: 30rem) {
+/*
+ * Bajo 44rem la barra pasa a dos filas: marca y salida arriba, secciones
+ * abajo a todo el ancho.
+ *
+ * En una sola fila la barra mide unos 610px de mínimo — en un teléfono de
+ * 430px eso desbordaba el documento y el contenido quedaba cortado a la
+ * izquierda. Truncar las etiquetas era la otra salida, pero "Configuración"
+ * recortado no se lee y los objetivos de toque quedaban chicos.
+ */
+@media (max-width: 44rem) {
+  .barraInterior {
+    flex-wrap: wrap;
+    row-gap: 0;
+    column-gap: var(--espacio-3);
+    padding: var(--espacio-2) var(--espacio-3) 0;
+  }
+
+  .navegacion {
+    /* Tercero en el orden visual, aunque en el marcado venga antes que Salir. */
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 0;
+    margin-top: var(--espacio-1);
+  }
+
+  .formSalir {
+    order: 2;
+  }
+
+  .enlace,
+  .enlaceActivo {
+    padding: var(--espacio-2);
+    /* La regla de la sección actual llega hasta el borde de la barra. */
+    border-radius: 4px 4px 0 0;
+  }
+}
+
+/* Muy angosto: el nombre cede y queda el monograma. */
+@media (max-width: 22rem) {
   .nombre {
     display: none;
   }
