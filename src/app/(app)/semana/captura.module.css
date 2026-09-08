@@ -57,6 +57,15 @@
   padding: var(--espacio-3) 0 var(--espacio-4);
 }
 
+/* Cambiar de modo con datos guardados los reemplaza. Se dice antes, no después. */
+.reemplazo {
+  color: var(--atencion-texto);
+  padding: var(--espacio-2) var(--espacio-4);
+  border-left: 3px solid var(--atencion);
+  background: var(--papel-hundido);
+  margin-bottom: var(--espacio-3);
+}
+
 /* ── Rejilla ─────────────────────────────────────────────────────────────── */
 
 .marco {
@@ -308,6 +317,11 @@
 }
 
 .borrador {
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+}
+
+.pista {
   color: var(--tinta-suave);
   font-size: var(--t-base);
 }

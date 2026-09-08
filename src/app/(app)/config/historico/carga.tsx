@@ -76,24 +76,32 @@ export function CargaHistorica({
 
   return (
     <div>
-      <label className={estilos.subtitulo} htmlFor="archivo">
-        Elegir el archivo
-      </label>
-      <br />
-      <input
-        className={estilos.archivo}
-        id="archivo"
-        type="file"
-        accept=".csv,text/csv,text/plain"
-        onChange={elegirArchivo}
-      />
+      <div className={estilos.selector}>
+        <input
+          className={estilos.archivo}
+          id="archivo"
+          type="file"
+          accept=".csv,text/csv,text/plain"
+          onChange={elegirArchivo}
+        />
+        <label className={estilos.etiquetaArchivo} htmlFor="archivo">
+          Elegir archivo CSV
+        </label>
+        <span
+          className={
+            nombreArchivo ? estilos.nombreArchivo : estilos.nombreArchivoVacio
+          }
+        >
+          {nombreArchivo ?? 'Ningún archivo elegido'}
+        </span>
+      </div>
 
       {errorLocal && <p className={estilos.error}>{errorLocal}</p>}
 
       {lectura && (
         <div className={estilos.resumenCarga}>
           <p>
-            <strong>{nombreArchivo}</strong>: {lectura.validas.length}{' '}
+            {lectura.validas.length}{' '}
             {lectura.validas.length === 1 ? 'fila lista' : 'filas listas'} para
             cargar
             {lectura.rechazadas.length > 0 &&

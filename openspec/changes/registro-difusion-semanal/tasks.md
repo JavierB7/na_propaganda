@@ -64,7 +64,7 @@
 - [x] 7.1 Disposición de tabla para pantallas anchas, con piezas como filas y métricas como columnas
 - [x] 7.2 Fila de total por línea y separación estructural entre líneas, sin columna comparable entre ellas
 - [x] 7.3 Navegación por teclado donde `Tab` recorre la fila y `Enter` baja por la columna
-- [x] 7.4 Columnas de solo lectura con los totales de las dos semanas previas, mostrando guion largo cuando no hay dato
+- [ ] 7.4 Columnas de solo lectura con los totales de las dos semanas previas, mostrando guion largo cuando no hay dato
 - [x] 7.5 Verificar que la tabla desplaza horizontalmente en su propio contenedor y que el cuerpo de la página nunca lo hace
 
 ## 8. Resumen semanal

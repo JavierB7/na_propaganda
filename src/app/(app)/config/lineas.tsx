@@ -18,64 +18,68 @@ export function NuevaLinea() {
   )
 
   return (
-    <form action={accion} className={estilos.formulario}>
-      <div className={estilos.grupo}>
-        <label className={estilos.etiqueta} htmlFor="nueva-nombre">
-          Nombre de la línea
-        </label>
-        <input
-          className={estilos.campo}
-          id="nueva-nombre"
-          name="nombre"
-          type="text"
-          required
-          placeholder="Eventos culturales"
-        />
-      </div>
+    <div className={estilos.alta}>
+      <h3 className={estilos.tituloAlta}>Agregar una línea</h3>
 
-      <div className={estilos.grupo}>
-        <label className={estilos.etiqueta} htmlFor="nueva-prefijo">
-          Prefijo del código
-        </label>
-        <input
-          className={estilos.campo}
-          id="nueva-prefijo"
-          name="prefijo"
-          type="text"
-          maxLength={5}
-          placeholder="Se deduce del nombre"
-          autoCapitalize="characters"
-        />
-        <span className={estilos.ayuda}>
-          Abre el código de cada pieza de la línea. Entre 2 y 5 letras. Si lo
-          dejás vacío, se deduce del nombre.
-        </span>
-      </div>
+      <form action={accion} className={estilos.formulario}>
+        <div className={estilos.grupo}>
+          <label className={estilos.etiqueta} htmlFor="nueva-nombre">
+            Nombre de la línea
+          </label>
+          <input
+            className={estilos.campo}
+            id="nueva-nombre"
+            name="nombre"
+            type="text"
+            required
+            placeholder="Eventos culturales"
+          />
+        </div>
 
-      <div className={`${estilos.grupo} ${estilos.anchoCompleto}`}>
-        <label className={estilos.etiqueta} htmlFor="nueva-unidad">
-          Unidad de éxito
-        </label>
-        <textarea
-          className={estilos.area}
-          id="nueva-unidad"
-          name="unidad_exito"
-          placeholder="Qué significa un buen resultado en esta línea"
-        />
-        <span className={estilos.ayuda}>
-          Se muestra junto a las cifras. Sirve para que quien lea sepa que la
-          misma cantidad no significa lo mismo en cada línea.
-        </span>
-      </div>
+        <div className={estilos.grupo}>
+          <label className={estilos.etiqueta} htmlFor="nueva-prefijo">
+            Prefijo del código
+          </label>
+          <input
+            className={estilos.campo}
+            id="nueva-prefijo"
+            name="prefijo"
+            type="text"
+            maxLength={5}
+            placeholder="Se deduce del nombre"
+            autoCapitalize="characters"
+          />
+          <span className={estilos.ayuda}>
+            Abre el código de cada pieza de la línea, como FIL en FIL-2609-01.
+            Entre 2 y 5 letras.
+          </span>
+        </div>
 
-      <div className={estilos.anchoCompleto}>
-        <Aviso resultado={resultado} />
-      </div>
+        <div className={`${estilos.grupo} ${estilos.anchoCompleto}`}>
+          <label className={estilos.etiqueta} htmlFor="nueva-unidad">
+            Unidad de éxito
+          </label>
+          <textarea
+            className={estilos.area}
+            id="nueva-unidad"
+            name="unidad_exito"
+            placeholder="Qué significa un buen resultado en esta línea"
+          />
+          <span className={estilos.ayuda}>
+            Se muestra junto a las cifras, para que quien lea sepa que la misma
+            cantidad no significa lo mismo en cada línea.
+          </span>
+        </div>
 
-      <button className={estilos.boton} type="submit" disabled={pendiente}>
-        {pendiente ? 'Creando' : 'Crear línea'}
-      </button>
-    </form>
+        <div className={estilos.anchoCompleto}>
+          <Aviso resultado={resultado} />
+        </div>
+
+        <button className={estilos.boton} type="submit" disabled={pendiente}>
+          {pendiente ? 'Creando' : 'Crear línea'}
+        </button>
+      </form>
+    </div>
   )
 }
 
@@ -86,13 +90,18 @@ export function FichaDeLinea({ linea }: { linea: Linea }) {
   )
 
   return (
-    <form
-      action={accion}
+    <section
       className={`${estilos.ficha} ${linea.activo ? '' : estilos.fichaInactiva}`}
     >
-      <input type="hidden" name="id" value={linea.id} />
+      <div className={estilos.identidad}>
+        <h3 className={estilos.nombreFicha}>{linea.nombre}</h3>
+        <span className={estilos.codigo}>{linea.prefijo}</span>
+        {!linea.activo && <span className={estilos.marcaInactiva}>Desactivada</span>}
+      </div>
 
-      <div className={estilos.formulario}>
+      <form action={accion} className={estilos.formulario}>
+        <input type="hidden" name="id" value={linea.id} />
+
         <div className={estilos.grupo}>
           <label className={estilos.etiqueta} htmlFor={`nombre-${linea.id}`}>
             Nombre
@@ -105,9 +114,9 @@ export function FichaDeLinea({ linea }: { linea: Linea }) {
             defaultValue={linea.nombre}
             required
           />
-          <span className={estilos.codigoFijo}>
-            Prefijo <span className={estilos.codigo}>{linea.prefijo}</span> — no
-            cambia, porque los códigos ya emitidos no cambian.
+          <span className={estilos.ayuda}>
+            El prefijo <strong>{linea.prefijo}</strong> no cambia aunque
+            corrijas el nombre: los códigos ya emitidos son permanentes.
           </span>
         </div>
 
@@ -116,7 +125,7 @@ export function FichaDeLinea({ linea }: { linea: Linea }) {
             Orden
           </label>
           <input
-            className={estilos.campo}
+            className={estilos.campoCorto}
             id={`orden-${linea.id}`}
             name="orden"
             type="number"
@@ -124,7 +133,8 @@ export function FichaDeLinea({ linea }: { linea: Linea }) {
             defaultValue={linea.orden}
           />
           <span className={estilos.ayuda}>
-            Menor primero. Define en qué orden aparecen las líneas.
+            Menor primero. Define en qué orden aparecen las líneas al registrar
+            y en el resumen.
           </span>
         </div>
 
@@ -137,16 +147,20 @@ export function FichaDeLinea({ linea }: { linea: Linea }) {
             id={`unidad-${linea.id}`}
             name="unidad_exito"
             defaultValue={linea.unidad_exito ?? ''}
+            placeholder="Qué significa un buen resultado en esta línea"
           />
         </div>
 
-        <label className={estilos.interruptor}>
-          <input type="checkbox" name="activo" defaultChecked={linea.activo} />
-          <span>
-            Activa
-            {!linea.activo && ' — sus registros anteriores siguen visibles'}
-          </span>
-        </label>
+        <div className={estilos.anchoCompleto}>
+          <label className={estilos.interruptor}>
+            <input type="checkbox" name="activo" defaultChecked={linea.activo} />
+            <span>Activa: aparece al registrar la semana</span>
+          </label>
+          <p className={estilos.nota}>
+            Una línea nunca se borra. Al desactivarla deja de aparecer al
+            registrar, y sus semanas ya cargadas siguen visibles en el resumen.
+          </p>
+        </div>
 
         <div className={estilos.anchoCompleto}>
           <Aviso resultado={resultado} />
@@ -155,7 +169,7 @@ export function FichaDeLinea({ linea }: { linea: Linea }) {
         <button className={estilos.boton} type="submit" disabled={pendiente}>
           {pendiente ? 'Guardando' : 'Guardar cambios'}
         </button>
-      </div>
-    </form>
+      </form>
+    </section>
   )
 }

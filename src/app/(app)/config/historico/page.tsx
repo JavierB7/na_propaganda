@@ -17,10 +17,9 @@ export default async function PaginaHistorico() {
 
   return (
     <>
-      <h1 className={estilos.titulo}>Configuración</h1>
       <Pestanias />
 
-      <h2 className={estilos.subtitulo}>Carga histórica</h2>
+      <h1 className={estilos.titulo}>Carga histórica</h1>
 
       <p className={estilos.intro}>
         Para pasar al sistema lo que está en el cuaderno. Sube totales por línea

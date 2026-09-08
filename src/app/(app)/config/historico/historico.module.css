@@ -18,7 +18,9 @@
 
 .subtitulo {
   font-size: var(--t-titulo);
-  margin-bottom: var(--espacio-3);
+  padding-bottom: var(--espacio-2);
+  border-bottom: 1px solid var(--pino);
+  margin-bottom: var(--espacio-4);
 }
 
 .formato {
@@ -47,10 +49,56 @@
   max-width: 70ch;
 }
 
+/*
+ * El input de archivo nativo se ve prestado y no se puede estilar. Se oculta
+ * de la vista pero sigue en el árbol de accesibilidad y sigue siendo
+ * enfocable; la etiqueta hace de botón y el foco del input se refleja en ella.
+ */
+.selector {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+
 .archivo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.etiquetaArchivo {
+  display: inline-flex;
+  align-items: center;
   min-height: var(--toque);
-  font: inherit;
-  padding: var(--espacio-2) 0;
+  padding: 0 var(--espacio-5);
+  font-weight: 600;
+  color: var(--pino);
+  background: #fff;
+  border: 1px solid var(--regla-fuerte);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.etiquetaArchivo:hover {
+  border-color: var(--pino);
+}
+
+.archivo:focus-visible + .etiquetaArchivo {
+  outline: 2px solid var(--pino);
+  outline-offset: 2px;
+}
+
+.nombreArchivo {
+  font-family: var(--serif);
+  color: var(--tinta);
+}
+
+.nombreArchivoVacio {
+  color: var(--tinta-suave);
 }
 
 .boton {

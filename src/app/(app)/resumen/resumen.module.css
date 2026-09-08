@@ -78,17 +78,39 @@
 }
 
 /* Semanas previas: solo lectura, para responder "¿y la semana pasada?". */
+.bloquePrevias {
+  margin-top: var(--espacio-5);
+}
+
+.tituloPrevias {
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+  margin-bottom: var(--espacio-2);
+}
+
 .previas {
   display: flex;
-  gap: var(--espacio-5);
-  margin-top: var(--espacio-4);
+  gap: var(--espacio-6);
   flex-wrap: wrap;
 }
 
 .previa {
   display: flex;
   flex-direction: column;
-  gap: var(--espacio-1);
+  gap: 2px;
+  /* Regla a la izquierda: separa las dos semanas sin encajonarlas. */
+  border-left: 1px solid var(--regla);
+  padding-left: var(--espacio-3);
+}
+
+/*
+ * Dos etiquetas por semana: cuál es respecto a la que estás viendo, y qué
+ * fechas cubre. Solo la fecha del lunes es ambigua — nadie sabe si "31 ago"
+ * es un día o una semana.
+ */
+.previaCuando {
+  color: var(--tinta);
+  font-size: var(--t-base);
 }
 
 .previaEtiqueta {

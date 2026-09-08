@@ -282,7 +282,18 @@ export function Captura({
       {semana.map((grupo) => {
         const modo = modos[grupo.linea.id] ?? 'desglose'
         const piezasActivas = grupo.piezas.filter((fila) => fila.pieza.activo)
-        const puedeElegir = grupo.permiteAgregado && piezasActivas.length > 0
+        const registradasDePieza = grupo.piezas.filter((fila) => fila.registro !== null)
+
+        /*
+         * El selector se ofrece siempre que la línea tenga piezas, y no solo
+         * cuando la semana está libre. Cambiar de modo con datos ya guardados
+         * es válido: la acción elimina lo del modo anterior y escribe lo del
+         * nuevo en un solo guardado. Antes el botón desaparecía justo cuando
+         * hacía falta, y no había manera visible de volver al total de línea.
+         */
+        const puedeElegir = grupo.piezas.length > 0
+        const reemplazaPiezas = modo === 'agregado' && registradasDePieza.length > 0
+        const reemplazaAgregado = modo === 'desglose' && grupo.agregado !== null
 
         return (
           <section className={estilos.linea} key={grupo.linea.id}>
@@ -302,6 +313,24 @@ export function Captura({
                   ? 'Registrar solo el total de la línea'
                   : 'Registrar pieza por pieza'}
               </button>
+            )}
+
+            {reemplazaPiezas && (
+              <p className={estilos.reemplazo}>
+                Al guardar, {registradasDePieza.length === 1
+                  ? 'el registro de la pieza'
+                  : `los ${registradasDePieza.length} registros por pieza`}{' '}
+                de esta semana se reemplaza
+                {registradasDePieza.length === 1 ? '' : 'n'} por un solo total de
+                línea.
+              </p>
+            )}
+
+            {reemplazaAgregado && (
+              <p className={estilos.reemplazo}>
+                Al guardar, el total de línea de esta semana se reemplaza por el
+                desglose por pieza.
+              </p>
             )}
 
             {modo === 'agregado' ? (
@@ -357,6 +386,10 @@ export function Captura({
       })}
 
       <div className={estilos.barraGuardado}>
+        <p className={estilos.pista}>
+          Para borrar un registro, vaciá todos sus campos y guardá.
+        </p>
+
         {borradorRestaurado && (
           <p className={estilos.borrador}>
             Se recuperó lo que habías tecleado y todavía no está guardado.

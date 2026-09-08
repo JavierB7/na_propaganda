@@ -8,32 +8,38 @@ export const metadata: Metadata = { title: 'Líneas · Bitácora' }
 
 export default async function PaginaLineas() {
   const todas = await lineas()
+  const activas = todas.filter((linea) => linea.activo).length
 
   return (
     <>
-      <h1 className={estilos.titulo}>Configuración</h1>
       <Pestanias />
 
+      <h1 className={estilos.titulo}>Líneas de difusión</h1>
       <p className={estilos.intro}>
-        Las líneas que sembramos salen de la conversación con Carlos, y pueden
-        estar incompletas. Agregá las que falten y ajustá su unidad de éxito.
+        Las cinco que están sembradas salen de la conversación con Carlos y
+        pueden estar incompletas. Cada línea tiene su propia escala de éxito:
+        nunca se comparan entre sí.
       </p>
 
       <section className={estilos.seccion}>
-        <h2 className={estilos.subtitulo}>Líneas registradas</h2>
+        <h2 className={estilos.subtitulo}>
+          Registradas
+          <span className={estilos.conteoGrupo}>
+            {activas} {activas === 1 ? 'activa' : 'activas'}
+            {todas.length > activas && ` · ${todas.length - activas} desactivadas`}
+          </span>
+        </h2>
+
         {todas.length === 0 ? (
           <p className={estilos.vacio}>
-            Todavía no hay líneas. Creá la primera abajo.
+            Todavía no hay líneas. Creá la primera abajo para poder registrar.
           </p>
         ) : (
           todas.map((linea) => <FichaDeLinea key={linea.id} linea={linea} />)
         )}
       </section>
 
-      <section className={estilos.seccion}>
-        <h2 className={estilos.subtitulo}>Agregar una línea</h2>
-        <NuevaLinea />
-      </section>
+      <NuevaLinea />
     </>
   )
 }

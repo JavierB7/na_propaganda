@@ -1,65 +1,153 @@
-/* Configuración: líneas y piezas. Formularios sobrios, sin tarjetas. */
+/*
+ * Configuración: líneas, piezas y carga histórica.
+ *
+ * Mismo vocabulario que la captura semanal: entradas regladas, identidad en
+ * serif, cifras y códigos tabulares. Cada línea o pieza es un asiento del
+ * libro, no una tarjeta.
+ */
+
+/* ── Pestañas ────────────────────────────────────────────────────────────── */
+/*
+ * La pestaña activa se marca con una regla gruesa que se monta sobre la regla
+ * del grupo. No hay título "Configuración" repetido encima: la pestaña es la
+ * navegación y el h1 es la sección donde estás.
+ */
+
+.pestanias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-1);
+  border-bottom: 1px solid var(--regla-fuerte);
+  margin-bottom: var(--espacio-6);
+}
+
+.pestania {
+  padding: var(--espacio-3) var(--espacio-4);
+  margin-bottom: -1px;
+  color: var(--tinta-suave);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  min-height: var(--toque);
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.pestania:hover {
+  color: var(--tinta);
+  background: var(--papel-hundido);
+}
+
+.pestaniaActiva {
+  /* Compone la base: sin esto pierde el alto de toque, el relleno y el
+     borde, y queda como un enlace suelto. */
+  composes: pestania;
+  color: var(--pino);
+  font-weight: 600;
+  border-bottom-color: var(--pino);
+}
+
+.pestaniaActiva:hover {
+  background: transparent;
+}
+
+/* ── Cabecera de sección ─────────────────────────────────────────────────── */
 
 .titulo {
   font-size: var(--t-cifra);
+  margin-bottom: var(--espacio-2);
 }
 
 .intro {
   color: var(--tinta-suave);
-  margin: var(--espacio-3) 0 var(--espacio-5);
-}
-
-.pestanias {
-  display: flex;
-  gap: var(--espacio-4);
-  border-bottom: 1px solid var(--regla-fuerte);
-  margin-bottom: var(--espacio-5);
-}
-
-.pestania {
-  padding: var(--espacio-3) 0;
-  margin-bottom: -1px;
-  color: var(--tinta-suave);
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-  min-height: var(--toque);
-  display: inline-flex;
-  align-items: center;
-}
-
-.pestaniaActiva {
-  color: var(--pino);
-  font-weight: 600;
-  border-bottom-color: var(--pino);
+  margin-bottom: var(--espacio-6);
+  max-width: 68ch;
 }
 
 .seccion {
   margin-bottom: var(--espacio-7);
 }
 
-.subtitulo {
-  font-size: var(--t-titulo);
-  margin-bottom: var(--espacio-4);
+.seccionSeparada {
+  composes: seccion;
+  margin-top: var(--espacio-7);
 }
 
+.subtitulo {
+  font-size: var(--t-titulo);
+  padding-bottom: var(--espacio-2);
+  border-bottom: 1px solid var(--pino);
+  margin-bottom: var(--espacio-2);
+}
+
+/* ── Asientos: una línea o una pieza ─────────────────────────────────────── */
+
 .ficha {
-  padding: var(--espacio-4) 0;
-  border-top: 1px solid var(--regla);
+  padding: var(--espacio-5) 0;
+  border-bottom: 1px solid var(--regla);
 }
 
 .fichaInactiva {
-  opacity: 0.65;
+  background: var(--papel-hundido);
+  /* Un asiento apagado se marca, no solo se atenúa: la opacidad sola hace
+     ilegible el texto secundario. */
+  box-shadow: inset 3px 0 0 0 var(--regla-fuerte);
+  padding-left: var(--espacio-4);
+  padding-right: var(--espacio-4);
 }
+
+/* Identidad del asiento: lo que lo nombra, arriba y en serif. */
+.identidad {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--espacio-2) var(--espacio-4);
+  margin-bottom: var(--espacio-4);
+}
+
+.nombreFicha {
+  font-family: var(--serif);
+  font-size: var(--t-titulo);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.codigo {
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--t-media);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--pino);
+}
+
+.descripcionFicha {
+  color: var(--tinta-suave);
+}
+
+.marcaInactiva {
+  color: var(--atencion-texto);
+  margin-left: auto;
+}
+
+.nota {
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+  margin-top: var(--espacio-2);
+  max-width: 60ch;
+}
+
+/* ── Formularios ─────────────────────────────────────────────────────────── */
 
 .formulario {
   display: grid;
-  gap: var(--espacio-3);
+  gap: var(--espacio-4);
 }
 
 @media (min-width: 48rem) {
   .formulario {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: end;
+    align-items: start;
   }
 
   .anchoCompleto {
@@ -70,6 +158,7 @@
 .grupo {
   display: grid;
   gap: var(--espacio-1);
+  align-content: start;
 }
 
 .etiqueta {
@@ -79,30 +168,60 @@
 .ayuda {
   color: var(--tinta-suave);
   font-size: var(--t-base);
+  max-width: 52ch;
+}
+
+.campo,
+.seleccion,
+.area {
+  width: 100%;
+  font: inherit;
+  color: var(--tinta);
+  background: #fff;
+  border: 1px solid var(--regla-fuerte);
+  border-radius: 3px;
 }
 
 .campo,
 .seleccion {
-  width: 100%;
   min-height: var(--toque);
   padding: 0 var(--espacio-3);
-  font: inherit;
-  color: var(--tinta);
-  background: #fff;
-  border: 1px solid var(--regla-fuerte);
-  border-radius: 4px;
 }
 
 .area {
-  width: 100%;
-  min-height: 4.5rem;
+  min-height: 5rem;
   padding: var(--espacio-3);
-  font: inherit;
-  color: var(--tinta);
-  background: #fff;
-  border: 1px solid var(--regla-fuerte);
-  border-radius: 4px;
   resize: vertical;
+  line-height: 1.5;
+}
+
+.campo:focus,
+.seleccion:focus,
+.area:focus {
+  border-color: var(--pino);
+}
+
+.campo::placeholder,
+.area::placeholder {
+  color: var(--regla-fuerte);
+}
+
+/* El desplegable nativo se ve prestado. Cursor propio, en verde de la casa. */
+.seleccion {
+  appearance: none;
+  padding-right: var(--espacio-6);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23086357' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--espacio-3) center;
+}
+
+/* Campo numérico corto: el orden no necesita ancho de nombre. */
+.campoCorto {
+  composes: campo;
+  max-width: 8rem;
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: right;
 }
 
 .interruptor {
@@ -110,12 +229,21 @@
   align-items: center;
   gap: var(--espacio-3);
   min-height: var(--toque);
+  cursor: pointer;
 }
 
 .interruptor input {
   width: 1.25rem;
   height: 1.25rem;
+  flex: none;
   accent-color: var(--pino);
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-3);
+  align-items: center;
 }
 
 .boton {
@@ -126,7 +254,7 @@
   color: #fff;
   background: var(--pino);
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   justify-self: start;
 }
@@ -153,42 +281,68 @@
   color: var(--pino);
 }
 
-.codigo {
-  font-family: var(--serif);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+/* ── Bloque de alta ──────────────────────────────────────────────────────── */
+/*
+ * El formulario de creación se distingue del listado con el mismo lenguaje
+ * que los avisos: fondo hundido y regla pino a la izquierda. Así no se lee
+ * como un asiento más.
+ */
+
+.alta {
+  background: var(--papel-hundido);
+  border-left: 3px solid var(--pino);
+  padding: var(--espacio-5);
 }
 
-.codigoFijo {
-  color: var(--tinta-suave);
-  font-size: var(--t-base);
+.tituloAlta {
+  font-size: var(--t-media);
+  font-family: var(--serif);
+  font-weight: 600;
+  margin-bottom: var(--espacio-4);
 }
+
+/* ── Mensajes ────────────────────────────────────────────────────────────── */
 
 .error {
   padding: var(--espacio-3) var(--espacio-4);
   border-left: 3px solid var(--atencion);
-  background: var(--papel-hundido);
+  background: #fff;
 }
 
 .exito {
   padding: var(--espacio-3) var(--espacio-4);
   border-left: 3px solid var(--oliva);
-  background: var(--papel-hundido);
+  background: #fff;
 }
 
 .vacio {
   color: var(--tinta-suave);
-  padding: var(--espacio-4) 0;
+  padding: var(--espacio-5) 0;
+  max-width: 60ch;
 }
+
+/* ── Agrupación por línea en la pantalla de piezas ───────────────────────── */
 
 .grupoLinea {
   margin-top: var(--espacio-6);
 }
 
+/*
+ * Regla más suave que la del título de sección: dos reglas pino seguidas
+ * compiten y la jerarquía deja de leerse.
+ */
 .nombreGrupo {
-  font-size: var(--t-media);
   font-family: var(--serif);
+  font-size: var(--t-media);
   font-weight: 600;
   padding-bottom: var(--espacio-2);
-  border-bottom: 1px solid var(--pino);
+  border-bottom: 1px solid var(--regla-fuerte);
+}
+
+.conteoGrupo {
+  color: var(--tinta-suave);
+  font-family: var(--sans);
+  font-size: var(--t-base);
+  font-weight: 400;
+  margin-left: var(--espacio-3);
 }

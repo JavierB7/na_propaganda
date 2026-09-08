@@ -71,9 +71,15 @@
 }
 
 .enlaceActivo {
+  /* Compone la base: sin esto pierde `color: #fff` y gana la regla de enlace
+     de globales.css, que lo pinta verde pino sobre el verde de la barra. */
+  composes: enlace;
   opacity: 1;
-  background: rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.18);
   font-weight: 600;
+  /* La sección actual también se marca con una regla, no solo con el fondo:
+     el contraste de fondo solo no alcanza para distinguirla. */
+  box-shadow: inset 0 -2px 0 0 var(--cromo);
 }
 
 .salir {

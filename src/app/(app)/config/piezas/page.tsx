@@ -14,12 +14,12 @@ export default async function PaginaPiezas() {
 
   return (
     <>
-      <h1 className={estilos.titulo}>Configuración</h1>
       <Pestanias />
 
+      <h1 className={estilos.titulo}>Piezas publicitarias</h1>
       <p className={estilos.intro}>
         Cada pieza recibe un código del sistema y no cambia nunca. Es lo que
-        permite seguir un video en el tiempo en lugar de nombrarlo de memoria.
+        permite seguir un video en el tiempo, en lugar de nombrarlo de memoria.
       </p>
 
       {activas.length === 0 ? (
@@ -29,13 +29,16 @@ export default async function PaginaPiezas() {
         </p>
       ) : (
         <>
-          <section className={estilos.seccion}>
-            <h2 className={estilos.subtitulo}>Agregar una pieza</h2>
-            <NuevaPieza lineas={activas} hoy={hoy()} />
-          </section>
+          <NuevaPieza lineas={activas} hoy={hoy()} />
 
-          <section className={estilos.seccion}>
-            <h2 className={estilos.subtitulo}>Piezas registradas</h2>
+          <section className={estilos.seccionSeparada}>
+            <h2 className={estilos.subtitulo}>
+              Registradas
+              <span className={estilos.conteoGrupo}>
+                {todasLasPiezas.length}{' '}
+                {todasLasPiezas.length === 1 ? 'pieza' : 'piezas'}
+              </span>
+            </h2>
 
             {todasLasPiezas.length === 0 ? (
               <p className={estilos.vacio}>
@@ -49,7 +52,12 @@ export default async function PaginaPiezas() {
 
                 return (
                   <div className={estilos.grupoLinea} key={linea.id}>
-                    <h3 className={estilos.nombreGrupo}>{linea.nombre}</h3>
+                    <h3 className={estilos.nombreGrupo}>
+                      {linea.nombre}
+                      <span className={estilos.conteoGrupo}>
+                        {suyas.length} {suyas.length === 1 ? 'pieza' : 'piezas'}
+                      </span>
+                    </h3>
                     {suyas.map((pieza) => (
                       <FichaDePieza key={pieza.id} pieza={pieza} />
                     ))}

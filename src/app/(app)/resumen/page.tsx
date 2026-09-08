@@ -4,8 +4,8 @@ import { lineas, piezas, registrosDeSemanas } from '@/datos/consultas'
 import { armarSemana, totalesPorLinea } from '@/dominio/semanaDeTrabajo'
 import {
   esLunes,
-  etiquetaBreve,
   lunesDe,
+  rangoCorto,
   semanaActual,
   semanaAnterior,
 } from '@/dominio/semana'
@@ -110,26 +110,40 @@ export default async function PaginaResumen({
                 </p>
               )}
 
-              <div className={estilos.previas}>
-                {[
-                  { semana: previa1, total: totales1.get(grupo.linea.id) },
-                  { semana: previa2, total: totales2.get(grupo.linea.id) },
-                ].map((previa) => (
-                  <div className={estilos.previa} key={previa.semana}>
-                    <span className={estilos.previaEtiqueta}>
-                      {etiquetaBreve(previa.semana)}
-                    </span>
-                    {previa.total === undefined || previa.total === null ? (
-                      <span className={estilos.previaSinDato} aria-label="Sin dato">
-                        —
+              <div className={estilos.bloquePrevias}>
+                <p className={estilos.tituloPrevias}>
+                  Mensajes de esta línea en las semanas anteriores
+                </p>
+                <div className={estilos.previas}>
+                  {[
+                    {
+                      semana: previa1,
+                      cuando: 'Semana anterior',
+                      total: totales1.get(grupo.linea.id),
+                    },
+                    {
+                      semana: previa2,
+                      cuando: 'Dos semanas antes',
+                      total: totales2.get(grupo.linea.id),
+                    },
+                  ].map((previa) => (
+                    <div className={estilos.previa} key={previa.semana}>
+                      <span className={estilos.previaCuando}>{previa.cuando}</span>
+                      <span className={estilos.previaEtiqueta}>
+                        {rangoCorto(previa.semana)}
                       </span>
-                    ) : (
-                      <span className={estilos.previaCifra}>
-                        {previa.total.toLocaleString('es-VE')}
-                      </span>
-                    )}
-                  </div>
-                ))}
+                      {previa.total === undefined || previa.total === null ? (
+                        <span className={estilos.previaSinDato} aria-label="Sin dato">
+                          —
+                        </span>
+                      ) : (
+                        <span className={estilos.previaCifra}>
+                          {previa.total.toLocaleString('es-VE')}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {grupo.modo === 'desglose' && registradosDePieza.length > 0 && (
