@@ -31,8 +31,12 @@ Todas están documentadas en `.env.example`. Las que hay que conseguir:
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | Igual. **Secreta**: pasa por encima de RLS |
-| `NEXT_PUBLIC_SITE_URL` | URL del despliegue, para el enlace de acceso |
+| `NEXT_PUBLIC_SITE_URL` | URL del despliegue, para el retorno del acceso |
 | `CRON_SECRET` | `openssl rand -hex 32` |
+
+En los despliegues de preview conviene **no** poner `NEXT_PUBLIC_SITE_URL`:
+cada preview tiene su propia URL y el código la deduce del host. Con el valor
+de producción fijo, el acceso de un preview terminaría en producción.
 
 Las dos primeras viajan al navegador y no son secretas: lo que protege los
 datos es la seguridad a nivel de fila en Postgres, no que la clave sea difícil
@@ -54,8 +58,9 @@ la CLI de Supabase.
 ```
 
 Después de aplicarlas, hay que dar acceso a los usuarios. La lista vive en la
-base de datos y no en la aplicación, porque es la misma que sostiene las
-políticas:
+base de datos y no en una variable de entorno, porque es la misma que sostiene
+las políticas de RLS: con dos listas habría que mantenerlas sincronizadas, y la
+de la aplicación podría discrepar de la frontera de seguridad real.
 
 ```sql
 insert into public.usuario_autorizado (correo, nota) values
@@ -89,6 +94,42 @@ poder probar contra un Postgres pelado. **Solo para pruebas.**
 npm test        # node:test sobre la lógica pura
 npm run typecheck
 ```
+
+## Formas de entrar
+
+Hay dos, y cualquiera de las dos sirve. Quién ve datos lo decide la lista de
+`usuario_autorizado`, no la manera de entrar.
+
+### Google (recomendada)
+
+Saca el correo del camino crítico: sin límites de envío por hora, sin problemas
+de entrega, y en el teléfono es un toque en lugar de salir a buscar el mensaje
+y volver.
+
+1. **Google Cloud Console** → crear un proyecto → *APIs & Services →
+   Credentials → Create credentials → OAuth client ID*, tipo *Web application*.
+2. En *Authorized redirect URIs* va **la URL de Supabase**, no la de la
+   aplicación:
+
+   ```
+   https://<tu-proyecto>.supabase.co/auth/v1/callback
+   ```
+
+3. En *OAuth consent screen*, con el tipo *External*, basta agregar a los dos
+   usuarios como *Test users*: así no hace falta pasar la verificación de
+   Google.
+4. **Supabase** → *Authentication → Sign In / Providers → Google*: habilitar y
+   pegar el *Client ID* y el *Client Secret*.
+
+### Enlace por correo
+
+Queda como respaldo para quien no tenga cuenta de Google.
+
+El servicio de correo integrado de Supabase **no sirve para producción**: tiene
+un límite bajo por hora, compartido entre desarrollo y producción, y se agota
+probando. Si se va a depender de él, hay que configurar un SMTP propio en
+*Authentication → Emails* (Brevo permite verificar un remitente suelto sin
+dominio; Resend exige dominio verificado).
 
 ## Despliegue
 

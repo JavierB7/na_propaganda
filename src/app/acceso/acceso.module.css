@@ -36,10 +36,75 @@
   max-width: 30ch;
 }
 
+.opciones {
+  display: grid;
+  gap: var(--espacio-4);
+  text-align: left;
+}
+
 .formulario {
   display: grid;
   gap: var(--espacio-3);
   text-align: left;
+}
+
+/*
+ * Separador con la etiqueta al medio. La regla dice que hay dos caminos, no
+ * decora: sin ella el segundo formulario se lee como continuación del primero.
+ */
+.separador {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+  margin: 0;
+}
+
+.separador::before,
+.separador::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--regla);
+}
+
+/*
+ * Botón de Google. Fondo blanco y borde, que es la variante permitida por
+ * Google, y la marca en sus colores sin recolorear. No lleva el verde de la
+ * casa: la identidad del proveedor tiene que reconocerse de un vistazo.
+ */
+.botonGoogle {
+  width: 100%;
+  min-height: 3.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-3);
+  padding: 0 var(--espacio-5);
+  font: inherit;
+  font-size: var(--t-media);
+  font-weight: 600;
+  color: var(--tinta);
+  background: #fff;
+  /* Borde en verde de la casa: es el camino recomendado y tiene que leerse
+     como el principal. Sin sombras — el sistema no las usa en ninguna parte. */
+  border: 1px solid var(--pino);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.botonGoogle:hover:not(:disabled) {
+  background: var(--papel-hundido);
+}
+
+.botonGoogle:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.marcaGoogle {
+  flex: none;
 }
 
 .etiqueta {
@@ -80,6 +145,28 @@
 }
 
 .boton:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.botonSecundario {
+  min-height: var(--toque);
+  padding: 0 var(--espacio-5);
+  font: inherit;
+  font-weight: 600;
+  color: var(--pino);
+  background: transparent;
+  border: 1px solid var(--regla-fuerte);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.botonSecundario:hover:not(:disabled) {
+  border-color: var(--pino);
+  background: var(--papel-hundido);
+}
+
+.botonSecundario:disabled {
   opacity: 0.6;
   cursor: progress;
 }

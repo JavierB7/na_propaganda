@@ -2,10 +2,28 @@
 
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
+import type { Route } from 'next'
 import type { AuthError } from '@supabase/supabase-js'
 import { crearClienteServidor } from '@/lib/supabase/servidor'
 
 export type ResultadoAcceso = { error: string } | { enviado: string }
+
+/**
+ * URL de retorno del proveedor de identidad.
+ *
+ * En producción sale de NEXT_PUBLIC_SITE_URL. En un despliegue de preview esa
+ * variable no está puesta a propósito, así que se deduce del host: cada
+ * preview tiene su propia URL y fijar la de producción mandaría al usuario al
+ * sitio equivocado.
+ */
+async function urlDeRetorno(destino: string): Promise<string> {
+  const cabeceras = await headers()
+  const origen =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    `https://${cabeceras.get('host') ?? 'localhost:3000'}`
+
+  return `${origen}/acceso/callback?destino=${encodeURIComponent(destino)}`
+}
 
 /**
  * Envía el enlace de acceso.
@@ -26,12 +44,7 @@ export async function enviarEnlace(
   }
 
   const supabase = await crearClienteServidor()
-  const cabeceras = await headers()
-  const origen =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    `https://${cabeceras.get('host') ?? 'localhost:3000'}`
-
-  const retorno = `${origen}/acceso/callback?destino=${encodeURIComponent(destino)}`
+  const retorno = await urlDeRetorno(destino)
 
   const { error } = await supabase.auth.signInWithOtp({
     email: correo,
@@ -94,6 +107,71 @@ function mensajeDeAcceso(error: AuthError): string {
 
   const codigo = error.code ?? error.status ?? 'sin código'
   return `No se pudo enviar el enlace (${codigo}). El motivo quedó en los registros del despliegue.`
+}
+
+/**
+ * Entrar con Google.
+ *
+ * Va del lado del servidor y no del navegador porque el verificador de PKCE
+ * se guarda en una cookie: si el intercambio arranca en el cliente, la cookie
+ * no llega al callback del servidor y el código no se puede canjear.
+ *
+ * Quita el correo del camino crítico: sin límites de envío por hora, sin
+ * problemas de entrega, y en el teléfono es un toque en lugar de salir a
+ * buscar el mensaje y volver.
+ */
+export async function entrarConGoogle(
+  _previo: ResultadoAcceso | null,
+  formulario: FormData,
+): Promise<ResultadoAcceso> {
+  const destino = String(formulario.get('destino') ?? '/semana')
+
+  const supabase = await crearClienteServidor()
+  const retorno = await urlDeRetorno(destino)
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: retorno,
+      queryParams: {
+        // Deja elegir cuenta en lugar de entrar con la última usada. Carlos
+        // comenta con varias cuentas y no siempre es la personal.
+        prompt: 'select_account',
+      },
+    },
+  })
+
+  if (error || !data?.url) {
+    console.error('[acceso] signInWithOAuth falló', {
+      estado: error?.status,
+      codigo: error?.code,
+      mensaje: error?.message,
+      retorno,
+    })
+
+    const texto = `${error?.code ?? ''} ${error?.message ?? ''}`.toLowerCase()
+
+    if (texto.includes('provider is not enabled') || texto.includes('unsupported')) {
+      return {
+        error:
+          'El acceso con Google no está habilitado en Supabase. Hay que activarlo en Authentication → Sign In / Providers → Google.',
+      }
+    }
+
+    return {
+      error:
+        'No se pudo empezar el acceso con Google. El motivo quedó en los registros del despliegue.',
+    }
+  }
+
+  /*
+   * `typedRoutes` valida los destinos contra las rutas del proyecto. Este
+   * destino es externo a propósito — la pantalla de Google — así que se
+   * afirma el tipo en lugar de apagar la validación para todo el archivo.
+   *
+   * Va fuera de cualquier try: redirect() lanza una señal que Next recibe.
+   */
+  redirect(data.url as Route)
 }
 
 export async function salir() {

@@ -11,6 +11,9 @@ const AVISOS: Record<string, string> = {
   'enlace-invalido': 'Ese enlace no traía la información necesaria. Puedes solicitar uno nuevo.',
   'enlace-vencido':
     'El enlace ya venció o se usó. Cada enlace sirve una sola vez; puedes solicitar uno nuevo.',
+  'acceso-cancelado': 'Se canceló el acceso con Google. Puedes intentar de nuevo.',
+  'proveedor-fallo':
+    'Google no completó el acceso. El motivo quedó en los registros del despliegue.',
 }
 
 export default async function Acceso({
@@ -46,8 +49,8 @@ export default async function Acceso({
         <FormularioDeAcceso destino={destino ?? '/semana'} />
 
         <p className={estilos.pie}>
-          No hay contraseña. Te llega un enlace al correo y con eso puedes
-          iniciar sesión.
+          No hay contraseña que recordar. Entras con tu cuenta de Google, o con
+          un enlace que llega a tu correo.
         </p>
       </div>
     </main>

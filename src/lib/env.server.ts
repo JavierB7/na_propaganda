@@ -5,18 +5,12 @@ import 'server-only'
  * módulo desde un componente de cliente falle en tiempo de compilación.
  */
 
-/** Correos autorizados, normalizados a minúsculas. */
-export function usuariosAutorizados(): string[] {
-  return (process.env.USUARIOS_AUTORIZADOS ?? '')
-    .split(',')
-    .map((correo) => correo.trim().toLowerCase())
-    .filter(Boolean)
-}
-
-export function estaAutorizado(correo: string | null | undefined): boolean {
-  if (!correo) return false
-  return usuariosAutorizados().includes(correo.trim().toLowerCase())
-}
+/*
+ * La lista de autorizados NO vive acá. Está en la tabla `usuario_autorizado`,
+ * porque es la misma que sostiene las políticas de RLS: si estuviera también
+ * en una variable de entorno habría dos listas que mantener sincronizadas, y
+ * la de la aplicación podría discrepar de la frontera de seguridad real.
+ */
 
 /**
  * Clave de servicio. Pasa por encima de RLS: solo para las tareas programadas
