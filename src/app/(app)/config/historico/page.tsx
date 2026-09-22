@@ -6,11 +6,11 @@ import estilos from './historico.module.css'
 
 export const metadata: Metadata = { title: 'Carga histórica · Bitácora' }
 
-const EJEMPLO = `linea,semana,mensajes,reproducciones,inversion_usd_dia,dias_activos,nota
-Filosofía,2026-08-31,44,,3,7,
-Arteterapia,2026-08-31,28,,2,7,
-Filosofía,2026-09-07,47,,3,7,
-Librería,2026-09-07,90,,7,7,Campaña de libros en venta`
+const EJEMPLO = `linea,semana,mensajes,reproducciones,inversion,dias_activos,nota
+Filosofía,2026-08-31,44,,21,7,
+Arteterapia,2026-08-31,28,,14,7,
+Filosofía,2026-09-07,47,,21,7,
+Librería,2026-09-07,90,,49,7,Campaña de libros en venta`
 
 export default async function PaginaHistorico() {
   const catalogo = await lineas()
@@ -49,6 +49,11 @@ export default async function PaginaHistorico() {
             <strong>mensajes</strong> es el total que ya se venía reportando. Se
             guarda como cifra histórica sin desglose, porque el cuaderno conserva
             la suma y no sus partes.
+          </li>
+          <li>
+            <strong>inversion</strong> es lo gastado en toda la semana, en
+            dólares, como lo muestra Meta para el lunes a domingo. No va el
+            monto por día. <strong>dias_activos</strong> va de 0 a 7.
           </li>
           <li>
             Las demás columnas son opcionales y se pueden dejar vacías. Vacío

@@ -211,6 +211,50 @@ begin
 end
 $$;
 
+-- ── Inversión semanal y días activos ────────────────────────────────────────
+
+do $$
+declare
+  v_linea uuid;
+  v_fallo boolean := false;
+begin
+  select id into v_linea from public.linea where nombre = 'Filoart';
+
+  -- Siete días es una semana completa: se acepta.
+  insert into public.registro_semanal (linea_id, semana_inicio, inversion_usd, dias_activos)
+  values (v_linea, '2026-10-05', 34.60, 7);
+
+  begin
+    insert into public.registro_semanal (linea_id, semana_inicio, dias_activos)
+    values (v_linea, '2026-10-12', 8);
+    v_fallo := true;
+  exception when check_violation then
+    null;
+  end;
+
+  if v_fallo then
+    raise exception 'FALLA dias: se aceptaron 8 días activos en una semana';
+  end if;
+
+  begin
+    insert into public.registro_semanal (linea_id, semana_inicio, inversion_usd)
+    values (v_linea, '2026-10-19', -1);
+    v_fallo := true;
+  exception when check_violation then
+    null;
+  end;
+
+  if v_fallo then
+    raise exception 'FALLA inversion: se aceptó una inversión negativa';
+  end if;
+
+  delete from public.registro_semanal
+  where linea_id = v_linea and semana_inicio = '2026-10-05';
+
+  raise notice 'OK       inversión semanal no negativa; días activos entre 0 y 7';
+end
+$$;
+
 -- ── 4.5 · Códigos de pieza ──────────────────────────────────────────────────
 
 do $$

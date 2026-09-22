@@ -13,6 +13,18 @@
   margin-bottom: var(--espacio-6);
 }
 
+/* El rango exacto de Meta: sin él se copia el acumulado por defecto. */
+.rangoMeta {
+  margin: 0;
+  color: var(--tinta-suave);
+  font-size: var(--t-base);
+}
+
+.rangoMeta strong {
+  color: var(--tinta);
+  font-weight: 600;
+}
+
 .linea {
   margin-top: var(--espacio-7);
 }

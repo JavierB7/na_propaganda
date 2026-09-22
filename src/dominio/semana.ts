@@ -30,10 +30,24 @@ function aTexto(marca: number): string {
   return new Date(marca).toISOString().slice(0, 10)
 }
 
-/** Fecha de hoy como día de calendario, en la zona del usuario. */
+/**
+ * El área opera en Caracas. "Hoy" se decide en esa zona y no en la del
+ * proceso: el servidor corre en UTC, y el registro se hace el domingo en la
+ * noche, justo cuando en UTC ya es lunes.
+ */
+export const ZONA_DEL_AREA = 'America/Caracas'
+
+// `en-CA` formatea como AAAA-MM-DD.
+const FORMATO_DE_HOY = new Intl.DateTimeFormat('en-CA', {
+  timeZone: ZONA_DEL_AREA,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+})
+
+/** Fecha de hoy como día de calendario en Caracas. */
 export function hoy(ahora: Date = new Date()): string {
-  const desplazado = ahora.getTime() - ahora.getTimezoneOffset() * 60_000
-  return new Date(desplazado).toISOString().slice(0, 10)
+  return FORMATO_DE_HOY.format(ahora)
 }
 
 /** El lunes de la semana que contiene la fecha dada. */
@@ -121,6 +135,25 @@ export function rangoLargo(semana: Semana): string {
     return `Semana del ${a.dia} de ${a.mes} al ${b.dia} de ${b.mes}`
   }
   return `Semana del ${a.dia} de ${a.mes} de ${a.anio} al ${b.dia} de ${b.mes} de ${b.anio}`
+}
+
+/**
+ * Rango a elegir en Meta: "del lunes 7 al domingo 13 de septiembre".
+ *
+ * Nombrar los días evita el error más probable al transcribir: copiar las
+ * cifras con el rango por defecto de Meta, que es acumulado.
+ */
+export function rangoParaMeta(semana: Semana): string {
+  const a = partes(lunesDe(semana))
+  const b = partes(domingoDe(semana))
+
+  if (a.mes === b.mes) {
+    return `del lunes ${a.dia} al domingo ${b.dia} de ${b.mes}`
+  }
+  if (a.anio === b.anio) {
+    return `del lunes ${a.dia} de ${a.mes} al domingo ${b.dia} de ${b.mes}`
+  }
+  return `del lunes ${a.dia} de ${a.mes} de ${a.anio} al domingo ${b.dia} de ${b.mes} de ${b.anio}`
 }
 
 /** Etiqueta compacta para las columnas de semanas previas: "1 sep". */

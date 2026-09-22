@@ -9,7 +9,7 @@ import {
   semanaActual,
   semanaAnterior,
 } from '@/dominio/semana'
-import { esTotalSinDesglose, inversionDeRegistro, totalDeRegistro } from '@/dominio/totales'
+import { esTotalSinDesglose, totalDeRegistro } from '@/dominio/totales'
 import { NavegadorDeSemana } from '@/componentes/NavegadorDeSemana'
 import estilos from './resumen.module.css'
 
@@ -202,23 +202,21 @@ export default async function PaginaResumen({
                                   <Cifra valor={totalDeRegistro(registro)} />
                                 </td>
                                 <td className={estilos.numerica}>
-                                  {inversionDeRegistro(registro) === null ? (
+                                  {registro.inversion_usd === null ? (
                                     <span className={estilos.ausente} aria-label="Sin dato">
                                       —
                                     </span>
                                   ) : (
                                     <>
-                                      ${inversionDeRegistro(registro)!.toFixed(2)}
-                                      {registro.inversion_usd_dia !== null &&
-                                        registro.dias_activos !== null && (
-                                          <>
-                                            {' '}
-                                            <span className={estilos.descripcionPieza}>
-                                              ({registro.inversion_usd_dia} × {registro.dias_activos}{' '}
-                                              d)
-                                            </span>
-                                          </>
-                                        )}
+                                      ${registro.inversion_usd.toFixed(2)}
+                                      {registro.dias_activos !== null && (
+                                        <>
+                                          {' '}
+                                          <span className={estilos.descripcionPieza}>
+                                            ({registro.dias_activos} d)
+                                          </span>
+                                        </>
+                                      )}
                                     </>
                                   )}
                                 </td>

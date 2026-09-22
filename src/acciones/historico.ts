@@ -66,7 +66,7 @@ export async function cargarHistorico(texto: string): Promise<ResultadoCarga> {
       mensajes_meta: null,
       consultas_comentarios: null,
       reproducciones: fila.reproducciones,
-      inversion_usd_dia: fila.inversionUsdDia,
+      inversion_usd: fila.inversionUsd,
       dias_activos: fila.diasActivos,
       nota: fila.nota,
     })

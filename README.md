@@ -55,6 +55,7 @@ la CLI de Supabase.
 0004_registro_semanal.sql  mediciones + integridad contra doble conteo
 0005_acceso.sql            lista de autorizados y políticas RLS
 0006_semilla_lineas.sql    las cinco líneas confirmadas con Carlos
+0007_inversion_semanal.sql inversión como gasto de la semana; días activos 0–7
 ```
 
 Después de aplicarlas, hay que dar acceso a los usuarios. La lista vive en la

@@ -189,6 +189,15 @@
   margin-top: var(--espacio-4);
 }
 
+/* Algo del archivo no se va a cargar, pero las filas sí. */
+.aviso {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-left: 3px solid var(--atencion);
+  background: var(--papel-hundido);
+  margin-top: var(--espacio-4);
+  color: var(--atencion-texto);
+}
+
 .exito {
   padding: var(--espacio-3) var(--espacio-4);
   border-left: 3px solid var(--oliva);

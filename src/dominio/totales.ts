@@ -77,13 +77,3 @@ export function sumaDeMetrica<T>(
 
   return suma
 }
-
-/** Inversión total de un registro: dólares por día × días activos. */
-export function inversionDeRegistro(registro: {
-  inversion_usd_dia: number | null
-  dias_activos: number | null
-}): number | null {
-  const { inversion_usd_dia: porDia, dias_activos: dias } = registro
-  if (porDia === null || dias === null) return null
-  return porDia * dias
-}

@@ -22,7 +22,8 @@ export type FilaHistorica = {
   semanaNormalizada: boolean
   mensajesTotalReportado: number | null
   reproducciones: number | null
-  inversionUsdDia: number | null
+  /** Gasto de la semana según Meta, no un valor por día. */
+  inversionUsd: number | null
   diasActivos: number | null
   nota: string | null
 }
@@ -36,6 +37,8 @@ export type FilaRechazada = {
 export type LecturaHistorica = {
   validas: FilaHistorica[]
   rechazadas: FilaRechazada[]
+  /** Problemas del archivo en conjunto, que no invalidan ninguna fila. */
+  avisos: string[]
 }
 
 export const COLUMNAS_HISTORICO = [
@@ -43,7 +46,7 @@ export const COLUMNAS_HISTORICO = [
   'semana',
   'mensajes',
   'reproducciones',
-  'inversion_usd_dia',
+  'inversion_usd',
   'dias_activos',
   'nota',
 ] as const
@@ -66,15 +69,23 @@ const ALIAS: Record<string, string> = {
   reproducciones: 'reproducciones',
   visitas: 'reproducciones',
   visualizaciones: 'reproducciones',
-  inversion: 'inversion_usd_dia',
-  inversion_usd_dia: 'inversion_usd_dia',
-  usd_dia: 'inversion_usd_dia',
+  inversion: 'inversion_usd',
+  inversion_usd: 'inversion_usd',
+  gasto: 'inversion_usd',
+  importe_gastado: 'inversion_usd',
   dias: 'dias_activos',
   dias_activos: 'dias_activos',
   nota: 'nota',
   observacion: 'nota',
   comentario: 'nota',
 }
+
+/**
+ * Encabezados de inversión por día. Ya no se aceptan: la inversión es el
+ * gasto de la semana. Se avisa en lugar de ignorarlos en silencio, para que
+ * el dato no se pierda sin que nadie lo note.
+ */
+const INVERSION_POR_DIA = ['inversion_usd_dia', 'usd_dia', 'inversion_dia']
 
 function canonica(fila: FilaCruda): FilaCruda {
   const salida: FilaCruda = {}
@@ -95,7 +106,15 @@ export function leerHistorico(
   texto: string,
   lineas: readonly { id: string; nombre: string }[],
 ): LecturaHistorica {
-  const { filas } = leerCsv(texto)
+  const { encabezados, filas } = leerCsv(texto)
+
+  const avisos: string[] = []
+  const porDia = encabezados.find((encabezado) => INVERSION_POR_DIA.includes(encabezado))
+  if (porDia) {
+    avisos.push(
+      `La columna "${porDia}" no se cargó: la inversión se espera como el gasto de la semana, en una columna "inversion".`,
+    )
+  }
 
   const porNombre = new Map(
     lineas.map((linea) => [normalizarClave(linea.nombre), linea]),
@@ -151,7 +170,7 @@ export function leerHistorico(
 
     const mensajes = numeroDeCelda(fila['mensajes'])
     const reproducciones = numeroDeCelda(fila['reproducciones'])
-    const inversion = numeroDeCelda(fila['inversion_usd_dia'])
+    const inversion = numeroDeCelda(fila['inversion_usd'])
     const dias = numeroDeCelda(fila['dias_activos'])
 
     // Una fila sin ninguna cifra no aporta nada, y crearla haría que una
@@ -161,6 +180,15 @@ export function leerHistorico(
         numero,
         motivo:
           'La fila no trae ninguna cifra. Una fila vacía haría ver la semana como registrada.',
+        contenido,
+      })
+      return
+    }
+
+    if (dias !== null && dias > 7) {
+      rechazadas.push({
+        numero,
+        motivo: `La fila indica ${dias} días activos. Una semana tiene como máximo siete.`,
         contenido,
       })
       return
@@ -186,11 +214,11 @@ export function leerHistorico(
       semanaNormalizada: !esLunes(fechaCruda),
       mensajesTotalReportado: mensajes,
       reproducciones,
-      inversionUsdDia: inversion,
+      inversionUsd: inversion,
       diasActivos: dias,
       nota: (fila['nota'] ?? '').trim() || null,
     })
   })
 
-  return { validas, rechazadas }
+  return { validas, rechazadas, avisos }
 }

@@ -46,7 +46,7 @@ export type RegistroSemanal = Atribucion & {
   consultas_comentarios: number | null
   /** Solo carga histórica: total ya sumado, sin desglose conocido. */
   mensajes_total_reportado: number | null
-  inversion_usd_dia: number | null
+  inversion_usd: number | null
   dias_activos: number | null
   nota: string | null
 }

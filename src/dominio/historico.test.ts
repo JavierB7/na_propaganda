@@ -160,10 +160,45 @@ describe('lectura del histórico', () => {
   })
 
   test('archivo vacío o solo con encabezados', () => {
-    assert.deepEqual(leerHistorico('', LINEAS), { validas: [], rechazadas: [] })
+    assert.deepEqual(leerHistorico('', LINEAS), { validas: [], rechazadas: [], avisos: [] })
     assert.deepEqual(leerHistorico('linea,semana,mensajes\n', LINEAS), {
       validas: [],
       rechazadas: [],
+      avisos: [],
     })
+  })
+
+  test('la inversión es el gasto de la semana, tal cual', () => {
+    const { validas, avisos } = leerHistorico(
+      'linea,semana,mensajes,inversion,dias_activos\nFilosofía,2026-09-07,47,34.60,5\n',
+      LINEAS,
+    )
+    assert.equal(validas[0]!.inversionUsd, 34.6)
+    assert.equal(validas[0]!.diasActivos, 5)
+    assert.deepEqual(avisos, [])
+  })
+
+  test('una columna de inversión por día no se carga y se avisa', () => {
+    const { validas, rechazadas, avisos } = leerHistorico(
+      'linea,semana,mensajes,usd_dia\nFilosofía,2026-09-07,47,5\n',
+      LINEAS,
+    )
+    assert.equal(validas.length, 1)
+    assert.equal(validas[0]!.inversionUsd, null)
+    assert.equal(validas[0]!.mensajesTotalReportado, 47)
+    assert.equal(rechazadas.length, 0)
+    assert.equal(avisos.length, 1)
+    assert.match(avisos[0]!, /gasto de la semana/)
+  })
+
+  test('más de siete días activos rechaza la fila', () => {
+    const { validas, rechazadas } = leerHistorico(
+      'linea,semana,mensajes,dias_activos\nFilosofía,2026-09-07,47,8\nArteterapia,2026-09-07,31,7\n',
+      LINEAS,
+    )
+    assert.equal(validas.length, 1)
+    assert.equal(validas[0]!.lineaNombre, 'Arteterapia')
+    assert.equal(rechazadas.length, 1)
+    assert.match(rechazadas[0]!.motivo, /siete/)
   })
 })

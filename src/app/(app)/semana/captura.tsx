@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { guardarSemana, type EntradaDeCaptura } from '@/acciones/registros'
 import { sumaDeMetrica, totalDeRegistro } from '@/dominio/totales'
-import { etiquetaBreve } from '@/dominio/semana'
+import { etiquetaBreve, rangoParaMeta } from '@/dominio/semana'
 import { MarcaDeSemana } from '@/componentes/MarcaDeSemana'
 import type { LineaDeLaSemana, Progreso } from '@/dominio/semanaDeTrabajo'
 import type { RegistroSemanal } from '@/lib/supabase/tipos'
@@ -14,7 +14,7 @@ type Valores = {
   reproducciones: string
   mensajesMeta: string
   consultasComentarios: string
-  inversionUsdDia: string
+  inversionUsd: string
   diasActivos: string
 }
 
@@ -35,7 +35,7 @@ const VACIO: Valores = {
   reproducciones: '',
   mensajesMeta: '',
   consultasComentarios: '',
-  inversionUsdDia: '',
+  inversionUsd: '',
   diasActivos: '',
 }
 
@@ -43,7 +43,7 @@ const CAMPOS = [
   { clave: 'reproducciones', etiqueta: 'Reproducciones' },
   { clave: 'mensajesMeta', etiqueta: 'Mensajes' },
   { clave: 'consultasComentarios', etiqueta: 'Consultas en comentarios' },
-  { clave: 'inversionUsdDia', etiqueta: 'Inversión por día en dólares', ancho: true },
+  { clave: 'inversionUsd', etiqueta: 'Inversión de la semana (USD)', ancho: true },
   { clave: 'diasActivos', etiqueta: 'Días activos' },
 ] as const satisfies readonly { clave: keyof Valores; etiqueta: string; ancho?: boolean }[]
 
@@ -81,7 +81,7 @@ function desdeRegistro(registro: RegistroSemanal | null): Valores {
     // escribirse como desglose: es la única forma de editarla sin mentir.
     mensajesMeta: aTexto(registro.mensajes_meta ?? registro.mensajes_total_reportado),
     consultasComentarios: aTexto(registro.consultas_comentarios),
-    inversionUsdDia: aTexto(registro.inversion_usd_dia),
+    inversionUsd: aTexto(registro.inversion_usd),
     diasActivos: aTexto(registro.dias_activos),
   }
 }
@@ -301,6 +301,9 @@ export function Captura({
     <form ref={formulario} onSubmit={enviar}>
       <div className={estilos.cabecera}>
         <MarcaDeSemana progreso={progreso} animar={guardado} />
+        <p className={estilos.rangoMeta}>
+          En Meta elige: <strong>{rangoParaMeta(semanaInicio)}</strong>
+        </p>
       </div>
 
       {semana.length === 0 && (
@@ -460,7 +463,7 @@ function Encabezado({
       <span className={estilos.encabezadoCifra}>Reprod.</span>
       <span className={estilos.encabezadoCifra}>Mensajes</span>
       <span className={estilos.encabezadoCifra}>Coment.</span>
-      <span className={estilos.encabezadoCifra}>Inv. $/día</span>
+      <span className={estilos.encabezadoCifra}>Inv. $</span>
       <span className={estilos.encabezadoCifra}>Días</span>
       <span className={estilos.encabezadoCifra}>Total</span>
       {semanasPrevias.map((p) => (

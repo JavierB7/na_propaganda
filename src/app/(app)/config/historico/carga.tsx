@@ -111,6 +111,12 @@ export function CargaHistorica({
             .
           </p>
 
+          {lectura.avisos.map((aviso) => (
+            <p className={estilos.aviso} key={aviso}>
+              {aviso}
+            </p>
+          ))}
+
           {lectura.validas.length > 0 && (
             <div className={estilos.marco}>
               <table className={estilos.tabla}>
@@ -125,7 +131,7 @@ export function CargaHistorica({
                       Reprod.
                     </th>
                     <th scope="col" className={estilos.numerica}>
-                      $/día
+                      Inversión $
                     </th>
                     <th scope="col" className={estilos.numerica}>
                       Días
@@ -151,7 +157,7 @@ export function CargaHistorica({
                       </td>
                       <Celda valor={fila.mensajesTotalReportado} />
                       <Celda valor={fila.reproducciones} />
-                      <Celda valor={fila.inversionUsdDia} />
+                      <Celda valor={fila.inversionUsd} />
                       <Celda valor={fila.diasActivos} />
                       <td>{fila.nota ?? ''}</td>
                     </tr>

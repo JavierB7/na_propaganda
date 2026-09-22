@@ -25,7 +25,7 @@ export type EntradaDeCaptura = {
   reproducciones: string
   mensajesMeta: string
   consultasComentarios: string
-  inversionUsdDia: string
+  inversionUsd: string
   diasActivos: string
 }
 
@@ -48,7 +48,7 @@ type Metricas = {
   reproducciones: number | null
   mensajes_meta: number | null
   consultas_comentarios: number | null
-  inversion_usd_dia: number | null
+  inversion_usd: number | null
   dias_activos: number | null
 }
 
@@ -57,7 +57,7 @@ function metricasDe(entrada: EntradaDeCaptura): Metricas {
     reproducciones: aNumero(entrada.reproducciones),
     mensajes_meta: aNumero(entrada.mensajesMeta),
     consultas_comentarios: aNumero(entrada.consultasComentarios),
-    inversion_usd_dia: aNumero(entrada.inversionUsdDia),
+    inversion_usd: aNumero(entrada.inversionUsd),
     dias_activos: aNumero(entrada.diasActivos),
   }
 }
@@ -161,6 +161,9 @@ function mensajeDeError(mensaje: string): string {
   }
   if (mensaje.includes('registro_linea_semana_agregado_unico')) {
     return 'Alguien guardó el total de esta línea mientras registrabas. Recarga la semana y revisa las cifras.'
+  }
+  if (mensaje.includes('registro_dias_activos_rango')) {
+    return 'Los días activos van de 0 a 7: una semana tiene siete días.'
   }
   if (mensaje.includes('registro_semana_es_lunes')) {
     return 'La semana debe empezar en lunes. Puedes elegirla de nuevo con las flechas.'

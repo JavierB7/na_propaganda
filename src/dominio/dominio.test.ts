@@ -5,11 +5,13 @@ import {
   lunesDe,
   esLunes,
   semanaActual,
+  hoy,
   semanaAnterior,
   semanaSiguiente,
   domingoDe,
   rangoCorto,
   rangoLargo,
+  rangoParaMeta,
   etiquetaBreve,
 } from '@/dominio/semana'
 import {
@@ -17,7 +19,6 @@ import {
   totalDeRegistros,
   esTotalSinDesglose,
   sumaDeMetrica,
-  inversionDeRegistro,
 } from '@/dominio/totales'
 import {
   armarSemana,
@@ -69,7 +70,7 @@ function registro(
     mensajes_meta: null,
     consultas_comentarios: null,
     mensajes_total_reportado: null,
-    inversion_usd_dia: null,
+    inversion_usd: null,
     dias_activos: null,
     nota: null,
     ...atribucion,
@@ -110,6 +111,19 @@ describe('semana', () => {
     assert.equal(semanaActual(jueves), '2026-09-07')
   })
 
+  test('el domingo en la noche en Caracas sigue siendo esa semana', () => {
+    // Domingo 13 sep, 22:00 en Caracas: en UTC ya es lunes 14.
+    const domingoNoche = new Date('2026-09-14T02:00:00Z')
+    assert.equal(hoy(domingoNoche), '2026-09-13')
+    assert.equal(semanaActual(domingoNoche), '2026-09-07')
+  })
+
+  test('el lunes pasada la medianoche en Caracas abre la semana nueva', () => {
+    const lunesMadrugada = new Date('2026-09-14T04:30:00Z')
+    assert.equal(hoy(lunesMadrugada), '2026-09-14')
+    assert.equal(semanaActual(lunesMadrugada), '2026-09-14')
+  })
+
   test('navegar semanas no se descuadra en el cambio de mes', () => {
     assert.equal(semanaAnterior('2026-09-07'), '2026-08-31')
     assert.equal(semanaSiguiente('2026-08-31'), '2026-09-07')
@@ -130,6 +144,18 @@ describe('semana', () => {
     assert.equal(
       rangoLargo('2026-12-28'),
       'Semana del 28 de diciembre de 2026 al 3 de enero de 2027',
+    )
+  })
+
+  test('rango para elegir en Meta nombra el lunes y el domingo', () => {
+    assert.equal(rangoParaMeta('2026-09-07'), 'del lunes 7 al domingo 13 de septiembre')
+    assert.equal(
+      rangoParaMeta('2026-09-28'),
+      'del lunes 28 de septiembre al domingo 4 de octubre',
+    )
+    assert.equal(
+      rangoParaMeta('2026-12-28'),
+      'del lunes 28 de diciembre de 2026 al domingo 3 de enero de 2027',
     )
   })
 
@@ -253,11 +279,6 @@ describe('totales de mensajes', () => {
     )
   })
 
-  test('la inversión necesita los dos factores', () => {
-    assert.equal(inversionDeRegistro({ inversion_usd_dia: 3, dias_activos: 7 }), 21)
-    assert.equal(inversionDeRegistro({ inversion_usd_dia: 3, dias_activos: null }), null)
-    assert.equal(inversionDeRegistro({ inversion_usd_dia: null, dias_activos: 7 }), null)
-  })
 })
 
 // ── Forma de la semana ────────────────────────────────────────────────────
