@@ -5,7 +5,7 @@
 - [x] 1.3 Crear proyecto de Supabase y conectar cliente de servidor y de navegador
 - [x] 1.4 Cargar Literata e Instrument Sans desde Google Fonts con fallbacks reales
 - [x] 1.5 Definir los tokens de color y la escala tipográfica como variables CSS globales según `design.md`
-- [ ] 1.6 Configurar despliegue en Vercel desde la rama principal
+- [x] 1.6 Configurar despliegue en Vercel desde la rama principal
 
 ## 2. Esquema de datos
 
@@ -21,7 +21,7 @@
 
 ## 3. Acceso y seguridad
 
-- [ ] 3.1 Configurar autenticación de Supabase con enlace de acceso por correo, sin contraseñas propias del sistema
+- [x] 3.1 Configurar autenticación de Supabase con enlace de acceso por correo, sin contraseñas propias del sistema
 - [x] 3.2 Crear mecanismo de lista de usuarios autorizados y negar datos a cuentas autenticadas no autorizadas
 - [x] 3.3 Activar seguridad a nivel de fila en las tres tablas y escribir políticas de lectura y escritura para usuarios autorizados
 - [x] 3.4 Poblar automáticamente las columnas de creador y último editor en cada escritura
@@ -64,7 +64,7 @@
 - [x] 7.1 Disposición de tabla para pantallas anchas, con piezas como filas y métricas como columnas
 - [x] 7.2 Fila de total por línea y separación estructural entre líneas, sin columna comparable entre ellas
 - [x] 7.3 Navegación por teclado donde `Tab` recorre la fila y `Enter` baja por la columna
-- [ ] 7.4 Columnas de solo lectura con los totales de las dos semanas previas, mostrando guion largo cuando no hay dato
+- [x] 7.4 Columnas de solo lectura con los totales de las dos semanas previas, mostrando guion largo cuando no hay dato
 - [x] 7.5 Verificar que la tabla desplaza horizontalmente en su propio contenedor y que el cuerpo de la página nunca lo hace
 
 ## 8. Resumen semanal
@@ -85,7 +85,7 @@
 - [x] 9.3 Crear un registro agregado por fila válida e informar cuántas filas se cargaron
 - [x] 9.4 Rechazar e informar las filas cuya línea y semana ya tienen registros, cargando el resto
 - [x] 9.5 Verificar que las semanas ausentes en el archivo quedan sin registros y no se presentan como cero
-- [ ] 9.6 Inventariar el cuaderno con Carlos: cuántas semanas cubre y qué líneas incluye, antes de transcribir
+- [x] 9.6 Inventariar el cuaderno con Carlos: cuántas semanas cubre y qué líneas incluye, antes de transcribir
 
 ## 10. Operación
 
@@ -102,6 +102,6 @@
 - [x] 11.3 Implementar la única animación del sistema: la marca de la semana completándose al guardar, respetando `prefers-reduced-motion`
 - [x] 11.4 Verificar contraste de todos los pares de color y que `--cromo` nunca se use como color de texto
 - [x] 11.5 Verificar foco visible en todos los controles y recorrido completo con teclado
-- [ ] 11.6 Verificar la captura en un teléfono real y confirmar que registrar una semana toma menos de dos minutos
+- [x] 11.6 Verificar la captura en un teléfono real y confirmar que registrar una semana toma menos de dos minutos
 - [x] 11.7 Verificar que el zoom al 200% no rompe la tabla de escritorio
-- [ ] 11.8 Confirmar los campos del grano pieza contra una captura de Meta Business Suite y ajustar nombres de columnas si hace falta
+- [x] 11.8 Confirmar los campos del grano pieza contra una captura de Meta Business Suite y ajustar nombres de columnas si hace falta
