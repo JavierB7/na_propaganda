@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { guardarSemana, type EntradaDeCaptura } from '@/acciones/registros'
-import { totalDeRegistro } from '@/dominio/totales'
+import { sumaDeMetrica, totalDeRegistro } from '@/dominio/totales'
+import { etiquetaBreve } from '@/dominio/semana'
 import { MarcaDeSemana } from '@/componentes/MarcaDeSemana'
 import type { LineaDeLaSemana, Progreso } from '@/dominio/semanaDeTrabajo'
 import type { RegistroSemanal } from '@/lib/supabase/tipos'
@@ -18,6 +19,17 @@ type Valores = {
 }
 
 type Modo = 'desglose' | 'agregado'
+
+/** Totales de una semana anterior, para las columnas de solo lectura. */
+export type SemanaPrevia = {
+  semana: string
+  /** Total de mensajes por id de línea. Ausente: la línea no se registró. */
+  porLinea: Record<string, number | null>
+  /** Total de mensajes por id de pieza. Ausente: la pieza no se registró. */
+  porPieza: Record<string, number | null>
+}
+
+type Previas = readonly (number | null)[]
 
 const VACIO: Valores = {
   reproducciones: '',
@@ -41,6 +53,23 @@ function clave(lineaId: string, piezaId: string | null): string {
 
 function aTexto(valor: number | null): string {
   return valor === null ? '' : String(valor)
+}
+
+/** Mismo criterio que el servidor: vacío es ausencia, la coma vale como punto. */
+function aNumero(texto: string): number | null {
+  const limpio = texto.trim().replace(',', '.')
+  if (limpio === '') return null
+  const valor = Number(limpio)
+  return Number.isFinite(valor) ? valor : null
+}
+
+/** Total en vivo de lo tecleado, con la misma regla que el servidor: nulo no es cero. */
+function totalDeValores(valores: Valores): number | null {
+  return totalDeRegistro({
+    mensajes_meta: aNumero(valores.mensajesMeta),
+    consultas_comentarios: aNumero(valores.consultasComentarios),
+    mensajes_total_reportado: null,
+  })
 }
 
 function desdeRegistro(registro: RegistroSemanal | null): Valores {
@@ -91,10 +120,12 @@ export function Captura({
   semanaInicio,
   semana,
   progreso,
+  previas,
 }: {
   semanaInicio: string
   semana: LineaDeLaSemana[]
   progreso: Progreso
+  previas: readonly SemanaPrevia[]
 }) {
   const router = useRouter()
   const [guardando, iniciarGuardado] = useTransition()
@@ -294,6 +325,7 @@ export function Captura({
         const puedeElegir = grupo.piezas.length > 0
         const reemplazaPiezas = modo === 'agregado' && registradasDePieza.length > 0
         const reemplazaAgregado = modo === 'desglose' && grupo.agregado !== null
+        const previasDeLinea = previas.map((p) => p.porLinea[grupo.linea.id] ?? null)
 
         return (
           <section className={estilos.linea} key={grupo.linea.id}>
@@ -356,6 +388,8 @@ export function Captura({
                     alPresionarTecla={alPresionarTecla}
                     conEncabezado
                     tituloColumna="Línea"
+                    semanasPrevias={previas}
+                    previas={previasDeLinea}
                   />
                 </div>
               </>
@@ -366,7 +400,7 @@ export function Captura({
               </p>
             ) : (
               <div className={estilos.marco}>
-                <Encabezado />
+                <Encabezado semanasPrevias={previas} />
                 {grupo.piezas.map((fila) => (
                   <Fila
                     key={fila.pieza.id}
@@ -377,8 +411,15 @@ export function Captura({
                     valores={valores[clave(grupo.linea.id, fila.pieza.id)] ?? VACIO}
                     alCambiar={cambiar}
                     alPresionarTecla={alPresionarTecla}
+                    previas={previas.map((p) => p.porPieza[fila.pieza.id] ?? null)}
                   />
                 ))}
+                <FilaTotalDeLinea
+                  valores={grupo.piezas.map(
+                    (fila) => valores[clave(grupo.linea.id, fila.pieza.id)] ?? VACIO,
+                  )}
+                  previas={previasDeLinea}
+                />
               </div>
             )}
           </section>
@@ -406,7 +447,13 @@ export function Captura({
   )
 }
 
-function Encabezado({ primera = 'Pieza' }: { primera?: string }) {
+function Encabezado({
+  primera = 'Pieza',
+  semanasPrevias,
+}: {
+  primera?: string
+  semanasPrevias: readonly SemanaPrevia[]
+}) {
   return (
     <div className={estilos.encabezado} aria-hidden="true">
       <span>{primera}</span>
@@ -416,6 +463,11 @@ function Encabezado({ primera = 'Pieza' }: { primera?: string }) {
       <span className={estilos.encabezadoCifra}>Inv. $/día</span>
       <span className={estilos.encabezadoCifra}>Días</span>
       <span className={estilos.encabezadoCifra}>Total</span>
+      {semanasPrevias.map((p) => (
+        <span className={estilos.encabezadoPrevia} key={p.semana}>
+          {etiquetaBreve(p.semana)}
+        </span>
+      ))}
     </div>
   )
 }
@@ -430,6 +482,8 @@ function Fila({
   alPresionarTecla,
   conEncabezado = false,
   tituloColumna,
+  semanasPrevias = [],
+  previas,
 }: {
   llave: string
   titulo: string
@@ -440,20 +494,14 @@ function Fila({
   alPresionarTecla: (evento: React.KeyboardEvent<HTMLInputElement>, campo: string) => void
   conEncabezado?: boolean
   tituloColumna?: string
+  semanasPrevias?: readonly SemanaPrevia[]
+  previas: Previas
 }) {
-  // Total en vivo, con la misma regla que el servidor: nulo no es cero.
-  const total = totalDeRegistro({
-    mensajes_meta: valores.mensajesMeta.trim() === '' ? null : Number(valores.mensajesMeta),
-    consultas_comentarios:
-      valores.consultasComentarios.trim() === ''
-        ? null
-        : Number(valores.consultasComentarios),
-    mensajes_total_reportado: null,
-  })
+  const total = totalDeValores(valores)
 
   return (
     <>
-      {conEncabezado && <Encabezado primera={tituloColumna} />}
+      {conEncabezado && <Encabezado primera={tituloColumna} semanasPrevias={semanasPrevias} />}
       <div className={estilos.fila}>
         <div className={estilos.identidad}>
           <div className={estilos.codigo}>{titulo}</div>
@@ -489,7 +537,58 @@ function Fila({
             <span className={estilos.totalCifra}>{total}</span>
           )}
         </div>
+
+        <CeldasPrevias previas={previas} />
       </div>
     </>
+  )
+}
+
+/**
+ * Suma de la línea en desglose, en vivo. Solo lectura: lo que se edita son
+ * las piezas.
+ */
+function FilaTotalDeLinea({ valores, previas }: { valores: Valores[]; previas: Previas }) {
+  const suma = (campo: keyof Valores) => sumaDeMetrica(valores, (v) => aNumero(v[campo]))
+  const total = sumaDeMetrica(valores, totalDeValores)
+
+  return (
+    <div className={estilos.filaTotalLinea}>
+      <div className={estilos.codigo}>Total de la línea</div>
+      <Cifra valor={suma('reproducciones')} etiqueta="Reproducciones" />
+      <Cifra valor={suma('mensajesMeta')} etiqueta="Mensajes" />
+      <Cifra valor={suma('consultasComentarios')} etiqueta="Consultas en comentarios" />
+      <span />
+      <span />
+      <Cifra valor={total} etiqueta="Total de mensajes" />
+      <CeldasPrevias previas={previas} />
+    </div>
+  )
+}
+
+/** Totales de las semanas previas. El guion largo es ausencia, nunca cero. */
+function CeldasPrevias({ previas }: { previas: Previas }) {
+  return previas.map((valor, indice) => (
+    <div className={estilos.previa} key={indice}>
+      <span className={estilos.totalEtiqueta}>
+        {indice === 0 ? 'Semana anterior' : 'Hace dos semanas'}
+      </span>
+      <Cifra valor={valor} />
+    </div>
+  ))
+}
+
+function Cifra({ valor, etiqueta }: { valor: number | null; etiqueta?: string }) {
+  return (
+    <span className={estilos.cifraFija}>
+      {etiqueta && <span className={estilos.totalEtiqueta}>{etiqueta}</span>}
+      {valor === null ? (
+        <span className={estilos.sinDato} aria-label="Sin dato">
+          —
+        </span>
+      ) : (
+        valor.toLocaleString('es-VE')
+      )}
+    </span>
   )
 }

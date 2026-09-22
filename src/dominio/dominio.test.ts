@@ -19,7 +19,12 @@ import {
   sumaDeMetrica,
   inversionDeRegistro,
 } from '@/dominio/totales'
-import { armarSemana, progresoDeSemana, totalesPorLinea } from '@/dominio/semanaDeTrabajo'
+import {
+  armarSemana,
+  progresoDeSemana,
+  totalesPorLinea,
+  totalesPorPieza,
+} from '@/dominio/semanaDeTrabajo'
 import type { Linea, Pieza, RegistroSemanal } from '@/lib/supabase/tipos'
 
 // ── Ayudas de construcción ────────────────────────────────────────────────
@@ -429,5 +434,20 @@ describe('totales por línea', () => {
     assert.equal(totales.get('l-lib'), null)
     // Nunca registrada: ausente del mapa.
     assert.equal(totales.has('l-caf'), false)
+  })
+})
+
+describe('totales por pieza', () => {
+  test('indexa por pieza y deja fuera los agregados de línea', () => {
+    const totales = totalesPorPieza([
+      registro({ id: 'r-1', linea_id: 'l-fil', pieza_id: 'p-1', mensajes_meta: 11, consultas_comentarios: 3 }),
+      registro({ id: 'r-2', linea_id: 'l-fil', pieza_id: 'p-2' }),
+      registro({ id: 'r-3', linea_id: 'l-art', mensajes_total_reportado: 31 }),
+    ])
+
+    assert.equal(totales.get('p-1'), 14)
+    // Registrada pero sin cifra: nulo, no cero.
+    assert.equal(totales.get('p-2'), null)
+    assert.equal(totales.size, 2)
   })
 })

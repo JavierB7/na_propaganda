@@ -162,6 +162,24 @@ export function totalesPorLinea(
   return totales
 }
 
+/**
+ * Total de mensajes por pieza, indexado por id de pieza. Los agregados de
+ * línea no tienen pieza y quedan fuera: una semana registrada como total de
+ * línea no dice nada de cada pieza.
+ */
+export function totalesPorPieza(
+  registros: readonly RegistroSemanal[],
+): Map<string, number | null> {
+  const totales = new Map<string, number | null>()
+
+  for (const registro of registros) {
+    if (registro.pieza_id === null) continue
+    totales.set(registro.pieza_id, totalDeRegistro(registro))
+  }
+
+  return totales
+}
+
 function porOrden(a: Linea, b: Linea): number {
   return a.orden - b.orden || a.nombre.localeCompare(b.nombre, 'es')
 }

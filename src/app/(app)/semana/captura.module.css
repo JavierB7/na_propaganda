@@ -186,21 +186,71 @@
   padding: 0 var(--espacio-2);
 }
 
+/*
+ * Semanas previas y total de línea: contexto de solo lectura que solo cabe
+ * en la tabla. En el teléfono se captura una pieza a la vez y sobran.
+ */
+.previa,
+.filaTotalLinea {
+  display: none;
+}
+
+.cifraFija {
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--t-media);
+  text-align: right;
+  padding: 0 var(--espacio-2);
+}
+
+.sinDato {
+  color: var(--regla-fuerte);
+}
+
 /* ── Escritorio: la misma estructura como tabla ──────────────────────────── */
 
 @media (min-width: 60rem) {
   .encabezado,
-  .fila {
+  .fila,
+  .filaTotalLinea {
     display: grid;
     grid-template-columns:
       minmax(16rem, 1fr)
       repeat(3, 7rem)
       8rem
       6rem
-      7rem;
+      7rem
+      repeat(2, 5.5rem);
     align-items: center;
     column-gap: var(--espacio-3);
-    min-width: 64rem;
+    min-width: 76rem;
+  }
+
+  /* Cierra el desglose con la suma de la línea: separación estructural. */
+  .filaTotalLinea {
+    padding: var(--espacio-3) 0;
+    border-top: 1px solid var(--pino);
+  }
+
+  /* Las semanas previas se separan de lo que se edita con una regla. */
+  .previa,
+  .encabezadoPrevia {
+    display: block;
+    text-align: right;
+    color: var(--tinta-suave);
+  }
+
+  .previa:nth-last-child(2),
+  .encabezadoPrevia:nth-last-child(2) {
+    border-left: 1px solid var(--regla);
+  }
+
+  .encabezadoPrevia {
+    padding-right: var(--espacio-2);
+  }
+
+  .previa .cifraFija {
+    display: block;
   }
 
   .encabezado {
